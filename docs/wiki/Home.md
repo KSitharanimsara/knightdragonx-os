@@ -8,7 +8,8 @@
 
 | Page | Description |
 |------|-------------|
-| [Installation](Installation) | Step-by-step Arch install + KDX setup |
+| [Installation](Installation) | Complete step-by-step Arch install with GPU setup |
+| [Black Screen Fix](Black-Screen-Fix) | Diagnose and fix black screen issues (NVIDIA/AMD/Intel) |
 | [Hotspot Setup](Hotspot-Setup) | WiFi repeater / AP + NAT bridge |
 | [Branding](Branding) | Logos, colors, SDDM theme, Wallbash |
 | [Restore Points](Restore-Points) | Timeshift / Snapper backup guide |
