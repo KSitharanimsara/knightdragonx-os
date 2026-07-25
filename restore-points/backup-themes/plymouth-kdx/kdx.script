@@ -1,0 +1,14 @@
+wallpaper.image = Image("wallpaper.png");
+wallpaper.sprite = Sprite(wallpaper.image);
+wallpaper.sprite.SetX(0);
+wallpaper.sprite.SetY(0);
+wallpaper.sprite.SetWidth(Window.GetWidth());
+wallpaper.sprite.SetHeight(Window.GetHeight());
+wallpaper.sprite.SetOpacity(1.0);
+
+Plymouth.SetRefreshFunction(null);
+Plymouth.SetBootProgressFunction(null);
+Plymouth.SetDisplayNormalFunction(null);
+Plymouth.SetDisplayPasswordFunction(null);
+Plymouth.SetDisplayMessageFunction(null);
+Plymouth.SetHideMessageFunction(null);

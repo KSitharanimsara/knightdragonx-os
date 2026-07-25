@@ -1,0 +1,16 @@
+[Unit]
+Description=KDX WiFi Hotspot
+After=network-online.target NetworkManager.service
+Wants=network-online.target
+PartOf=NetworkManager.service
+
+[Service]
+Type=forking
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/kdx-hotspot-start.sh
+ExecStop=/usr/local/bin/kdx-hotspot-stop.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,269 @@
+================================================================================
+                    KDX ARCH LINUX FULL RESTORE GUIDE
+                     Backup Date: 2026-07-25
+================================================================================
+
+This guide will walk you through a complete Arch Linux reinstall and restore
+your exact KDX/HyDE setup, including configs, themes, wallpapers, and optimizations.
+
+================================================================================
+1. PRE-INSTALLATION PREPARATION
+================================================================================
+
+Create a bootable USB with the latest Arch Linux ISO:
+  1. Download from: https://archlinux.org/download/
+  2. Write to USB:
+     sudo dd if=archlinux-*.iso of=/dev/sdX bs=4M status=progress && sync
+
+Boot from USB and ensure you have:
+  - Internet connection (Ethernet preferred)
+  - UEFI mode enabled in BIOS
+  - VT-x/AMD-V enabled for KVM (if using virtualization)
+
+================================================================================
+2. BASE ARCH INSTALLATION (Standard Method)
+================================================================================
+
+Follow the official Arch install guide up to 'Install essential packages':
+  https://wiki.archlinux.org/title/Installation_guide
+
+Key steps:
+  1. Set keyboard layout: loadkeys us
+  2. Verify boot mode: ls /sys/firmware/efi/efivars
+  3. Connect to internet: ping archlinux.org
+  4. Update system clock: timedatectl set-ntp true
+  5. Partition disks (example for NVMe):
+     - /dev/nvme0n1p1: 512M  EFI (fat32)
+     - /dev/nvme0n1p2: 64G   root (ext4)
+     - /dev/nvme0n1p3: rest  home (ext4)
+  6. Format:
+     mkfs.fat -F32 /dev/nvme0n1p1
+     mkfs.ext4 /dev/nvme0n1p2
+     mkfs.ext4 /dev/nvme0n1p3
+  7. Mount:
+     mount /dev/nvme0n1p2 /mnt
+     mkdir -p /mnt/home /mnt/boot
+     mount /dev/nvme0n1p1 /mnt/boot
+     mount /dev/nvme0n1p3 /mnt/home
+
+================================================================================
+3. INSTALL GPU DRIVERS FIRST
+================================================================================
+
+You have HYBRID AMD + NVIDIA RTX 4050 setup.
+
+Install AMD GPU (always):
+  pacstrap -K /mnt amd-ucode mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
+
+Install NVIDIA GPU (always, for dGPU):
+  pacstrap -K /mnt nvidia-open-dkms nvidia-settings nvidia-utils lib32-nvidia-utils
+
+Generate fstab:
+  genfstab -U /mnt >> /mnt/etc/fstab
+
+Chroot:
+  arch-chroot /mnt
+
+================================================================================
+4. SYSTEM CONFIGURATION IN CHROOT
+================================================================================
+
+Set timezone (Asia/Colombo):
+  ln -sf /usr/share/zoneinfo/Asia/Colombo /etc/localtime
+  hwclock --systohc
+
+Set locale:
+  echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+  locale-gen
+  echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+Set hostname:
+  echo "kdx" > /etc/hostname
+
+Set root password:
+  passwd
+
+Create user:
+  useradd -m -G wheel,audio,video,storage,power,input -s /bin/bash kdx
+  passwd kdx
+  echo "kdx ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99-kdx-live-user
+  chmod 440 /etc/sudoers.d/99-kdx-live-user
+
+Install bootloader (systemd-boot recommended for UEFI):
+  bootctl --path=/boot install
+
+Create /boot/loader/entries/arch.conf:
+  title   Arch Linux
+  linux   /vmlinuz-linux
+  initrd  /amd-ucode.img
+  initrd  /initramfs-linux.img
+  options root=UUID=ROOT_UUID rw quiet splash
+
+(Replace ROOT_UUID with your root partition UUID from blkid)
+
+================================================================================
+5. INSTALL HDE DESKTOP ENVIRONMENT
+================================================================================
+
+Exit chroot temporarily or stay in chroot:
+  pacman -S --noconfirm hyprland uwsm kitty dolphin rofi waybar sddm \
+    qt5ct qt6ct kvantum kvantum-qt5 nwg-look nwg-displays fastfetch \
+    hyprlock hypridle hyprpolkitagent hyprsunset hyprpicker grim slurp \
+    wl-clip-persist cliphist dunst wlogout pamixer playerctl brightnessctl \
+    networkmanager pipewire wireplumber bluez blueman udiskie libnotify \
+    noto-fonts-emoji xdg-user-dirs fish starship zsh bat eza duf fzf unzip \
+    jq imagemagick ffmpegthumbs kde-cli-tools cava swayosd-git
+
+Enable services:
+  systemctl enable NetworkManager
+  systemctl enable sddm
+  systemctl enable fstrim.timer
+
+================================================================================
+6. RESTORE CONFIGS FROM BACKUP
+================================================================================
+
+Copy backup to new system:
+  cp -r /path/to/kdx-full-backup-2026-07-25/* /home/kdx/
+
+OR extract if archived:
+  tar -xzf kdx-full-backup-2026-07-25.tar.gz -C /home/kdx/
+
+Restore system configs (as root):
+  cp system-etc/sddm.conf.d/* /etc/sddm.conf.d/
+  cp system-etc/mkinitcpio.conf /etc/
+  cp system-etc/udev/hwdb.d/* /etc/udev/hwdb.d/ 2>/dev/null || true
+  cp system-etc/sysctl.d/* /etc/sysctl.d/ 2>/dev/null || true
+
+Apply hwdb and sysctl:
+  systemd-hwdb update
+  udevadm trigger /dev/input/event2
+  sysctl --system
+
+Restore themes (as root):
+  cp -r themes/plymouth-kdx /usr/share/plymouth/themes/
+  cp -r themes/sddm-corners /usr/share/sddm/themes/
+  cp -r themes/Wallbash-Gtk /usr/share/themes/ 2>/dev/null || true
+  cp -r themes/Tela-circle-dracula /usr/share/icons/ 2>/dev/null || true
+
+Restore wallpapers (as root):
+  cp -r wallpapers/* /usr/share/wallpapers/ 2>/dev/null || true
+
+Set plymouth theme:
+  plymouth-set-default-theme -R kdx
+
+Set SDDM theme:
+  echo "[Theme]
+Current=Corners" > /etc/sddm.conf.d/theme.conf
+
+Restore user dotfiles:
+  cp -r user-home/.config/* /home/kdx/.config/
+  cp -r user-home/.local/share/* /home/kdx/.local/share/
+  cp -r user-home/.local/state/* /home/kdx/.local/state/ 2>/dev/null || true
+  cp user-home/.zshrc user-home/.zshenv user-home/.gtkrc-2.0 /home/kdx/ 2>/dev/null || true
+
+Fix permissions:
+  chown -R kdx:kdx /home/kdx
+
+================================================================================
+7. RESTORE PACKAGES
+================================================================================
+
+Install official packages:
+  pacman -S --needed - < packages/pacman-explicit.txt
+
+Install AUR packages (using your AUR helper, e.g., paru/yay):
+  paru -S --needed - < packages/aur-packages.txt
+
+OR manually install from the list in packages/aur-packages.txt
+
+================================================================================
+8. POST-INSTALL OPTIMIZATIONS
+================================================================================
+
+Apply performance sysctl:
+  cp system-etc/sysctl.d/* /etc/sysctl.d/ 2>/dev/null || true
+  sysctl --system
+
+Disable unnecessary services (as root):
+  systemctl disable --now auto-cpufreq.service 2>/dev/null || true
+  systemctl disable --now thermald.service 2>/dev/null || true
+  systemctl disable --now NetworkManager-wait-online.service 2>/dev/null || true
+
+Clean pacman cache:
+  paccache -r -k 1
+
+================================================================================
+9. FINAL STEPS
+================================================================================
+
+Reboot:
+  exit   # from chroot if still there
+  reboot
+
+After reboot:
+  1. Login at SDDM (user: kdx, password: your_password)
+  2. Desktop should load automatically
+  3. Verify Qt scaling is correct (file dialogs normal size)
+  4. Test lock screen (Super+L)
+  5. Check audio, Bluetooth, WiFi
+
+================================================================================
+10. TROUBLESHOOTING
+================================================================================
+
+If Super+L shows garbled text on hyprlock:
+  pkill hyprlock && hyprlock
+
+If Qt file dialogs are too big:
+  uwsm stop && uwsm start hyprland-uwsm
+
+If NVIDIA not working:
+  Check: nvidia-smi
+  Reinstall: nvidia-open-dkms nvidia-utils
+  Rebuild initramfs: mkinitcpio -P
+
+If Plymouth splash doesn't show:
+  plymouth-set-default-theme -R kdx
+  mkinitcpio -P
+
+If SDDM shows font errors:
+  pacman -S cantarell-fonts
+  systemctl restart sddm
+
+================================================================================
+BACKUP CONTENTS
+================================================================================
+
+user-home/
+  .config/         - All app configs (Hyprland, HyDE, Qt, Kvantum, waybar, etc.)
+  .local/          - HyDE state, hyprland configs, applications
+  .zshrc           - Shell config
+  .zshenv          - Environment variables
+  .gtkrc-2.0       - GTK2 theme settings
+  .icons/          - Custom icons
+
+system-etc/
+  sddm.conf.d/     - Display manager configs
+  mkinitcpio.conf  - Initramfs config
+  udev hwdb        - Keyboard fix for HP laptops
+  sysctl.d/        - Performance optimizations
+
+themes/
+  plymouth-kdx/    - Boot splash theme
+  sddm-corners/    - Login manager theme
+  Wallbash-Gtk/    - GTK theme
+  Tela-circle-dracula/ - Icon theme
+
+wallpapers/
+  hyde-themes/     - All HyDE theme wallpapers
+  kdx/             - KDX custom wallpapers
+
+packages/
+  pacman-explicit.txt - All official packages
+  aur-packages.txt     - All AUR packages
+  mirrorlist           - Pacman mirrors
+
+================================================================================
+END OF GUIDE
+================================================================================

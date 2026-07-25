@@ -1,0 +1,14 @@
+[Plymouth Theme]
+Name=Knight Dragon X
+Description=KDX custom boot splash
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/kdx
+ScriptFile=/usr/share/plymouth/themes/kdx/kdx.script
+Font=Sans 12
+FontColor=0xffffff
+BackgroundColor=0x000000
+TransparentBackground=false
+HorizontalAlignment=.5
+VerticalAlignment=.5
