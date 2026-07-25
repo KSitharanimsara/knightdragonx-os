@@ -1,3 +1,4 @@
+#      ░▒▒▒░░░░░▓▓          ___________
 #    ░░▒▒▒░░░░░▓▓        //___________/
 #   ░░▒▒▒░░░░░▓▓     _   _ _    _ _____
 #   ░░▒▒░░░░░▓▓▓▓▓▓ | | | | |  | |  __/
@@ -79,6 +80,18 @@ input-field {
     hide_input = false
     position = 0, 60
     halign = center
+    valign = bottom
+}
+
+# Battery Status if present
+label {
+    monitor =
+    text = cmd[update:5000] $BATTERY_ICON
+    color = $wallbash_txt2_rgba
+    font_size = 20
+    font_family = JetBrainsMono Nerd Font
+    position = -1%, 1%
+    halign = right
     valign = bottom
 }
 

@@ -1,0 +1,11 @@
+$HOME/.config/rofi/theme.rasi|killall -SIGUSR1 rofi
+* {
+    main-bg:            #0a0a0ae6;
+    main-fg:            #ffffff;
+    main-br:            #FF0033;
+    main-ex:            #FFAA00;
+    select-bg:          #FF0033;
+    select-fg:          #ffffff;
+    separatorcolor:     #222222;
+    border-color:       #333333;
+}
