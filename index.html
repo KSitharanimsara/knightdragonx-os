@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KnightDragonX OS</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 800px;
+    }
+    .logo {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 2rem;
+      background-image: url('branding/logo.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border: 1px solid #333;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      color: #888;
+      margin: 0.25rem;
+      letter-spacing: 0.1em;
+    }
+    .badge.highlight {
+      border-color: #FF0033;
+      color: #FF0033;
+    }
+    .links {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .links a {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border: 1px solid #333;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+    .links a:hover {
+      border-color: #FF0033;
+      color: #FF0033;
+    }
+    .footer {
+      margin-top: 4rem;
+      color: #444;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      background: #FF0033;
+      margin: 1.5rem auto;
+      box-shadow: 0 0 12px #FF0033;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo"></div>
+    <h1>KNIGHTDRAGONX OS</h1>
+    <p class="subtitle">Arch-based · Hyprland · HyDE · KDX Branding</p>
+    <div class="accent-line"></div>
+    <div>
+      <span class="badge highlight">Hyprland 0.56+</span>
+      <span class="badge highlight">HyDE</span>
+      <span class="badge">SDDM Corners</span>
+      <span class="badge">WiFi Hotspot</span>
+      <span class="badge">Wallbash</span>
+      <span class="badge">GPL-3.0</span>
+    </div>
+    <div class="links">
+      <a href="https://github.com/KSitharanimsara/knightdragonx-os">GitHub Repository</a>
+      <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki">Documentation Wiki</a>
+      <a href="branding/brand-portfolio.html">Brand Portfolio</a>
+      <a href="docs/wiki/Installation">Installation Guide</a>
+      <a href="docs/wiki/Hotspot-Setup">Hotspot Setup</a>
+    </div>
+    <div class="footer">
+      KNIGHTDRAGONX OS · 2026 EDITION
+    </div>
+  </div>
+</body>
+</html>
