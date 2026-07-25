@@ -3,120 +3,599 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KnightDragonX OS</title>
+  <title>KnightDragonX OS — Arch-based Hyprland Distribution</title>
+  <meta name="description" content="KnightDragonX OS is an Arch-based Linux distribution featuring Hyprland, HyDE, KDX branding, and a built-in WiFi hotspot service.">
   <style>
+    :root {
+      --red: #FF0033;
+      --orange: #FFAA00;
+      --bg: #111111;
+      --bg2: #1e1d2f;
+      --text: #FFFFFF;
+      --muted: #888888;
+      --border: #222222;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      background: #111;
-      color: #fff;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-    .container {
-      text-align: center;
-      padding: 2rem;
-      max-width: 800px;
+    a { color: var(--red); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--orange); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.9rem;
+      font-weight: 600; letter-spacing: 0.02em; transition: all 0.2s;
+      border: 1px solid transparent; cursor: pointer;
     }
-    .logo {
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 2rem;
-      background-image: url('branding/logo.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+    .btn-primary {
+      background: var(--red); color: #fff; border-color: var(--red);
+      box-shadow: 0 0 20px rgba(255,0,51,0.3);
     }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.5rem;
+    .btn-primary:hover { background: #d9002b; box-shadow: 0 0 30px rgba(255,0,51,0.5); }
+    .btn-secondary {
+      background: transparent; color: var(--text); border-color: var(--border);
     }
-    .subtitle {
-      color: #888;
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-    }
+    .btn-secondary:hover { border-color: var(--red); color: var(--red); }
     .badge {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border: 1px solid #333;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      color: #888;
-      margin: 0.25rem;
-      letter-spacing: 0.1em;
+      display: inline-block; padding: 0.25rem 0.75rem; border-radius: 999px;
+      font-size: 0.75rem; color: var(--muted); border: 1px solid var(--border);
+      margin: 0.25rem; letter-spacing: 0.08em; text-transform: uppercase;
     }
-    .badge.highlight {
-      border-color: #FF0033;
-      color: #FF0033;
+    .badge.highlight { border-color: var(--red); color: var(--red); }
+    section { padding: 5rem 0; }
+    .section-title {
+      font-size: 2rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: 0.02em;
     }
-    .links {
-      margin-top: 3rem;
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
+    .section-subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; max-width: 600px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(17,17,17,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); transition: all 0.3s;
     }
-    .links a {
-      color: #fff;
-      text-decoration: none;
-      padding: 0.75rem 1.5rem;
-      border: 1px solid #333;
-      border-radius: 8px;
-      transition: all 0.2s;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
+    nav .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .links a:hover {
-      border-color: #FF0033;
-      color: #FF0033;
+    nav .nav-left { display: flex; align-items: center; gap: 1rem; }
+    nav .nav-logo { width: 32px; height: 32px; background-image: url('branding/logo.png'); background-size: contain; background-repeat: no-repeat; background-position: center; }
+    nav .nav-brand { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.15em; }
+    nav .nav-links { display: flex; gap: 2rem; }
+    nav .nav-links a { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    nav .nav-links a:hover { color: var(--text); }
+    nav .nav-cta { display: flex; gap: 1rem; align-items: center; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; padding-top: 64px;
+      background: radial-gradient(ellipse at center, rgba(255,0,51,0.08) 0%, transparent 70%);
     }
-    .footer {
-      margin-top: 4rem;
-      color: #444;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
+    #hero .hero-content { max-width: 800px; }
+    #hero .hero-logo {
+      width: 160px; height: 160px; margin: 0 auto 2rem;
+      background-image: url('branding/logo.png'); background-size: contain;
+      background-repeat: no-repeat; background-position: center;
+      animation: float 6s ease-in-out infinite;
     }
-    .accent-line {
-      width: 60px;
-      height: 3px;
-      background: #FF0033;
-      margin: 1.5rem auto;
-      box-shadow: 0 0 12px #FF0033;
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    #hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: 0.04em;
+      line-height: 1.1; margin-bottom: 1rem;
+    }
+    #hero h1 span { color: var(--red); }
+    #hero .subtitle {
+      color: var(--muted); font-size: 1.1rem; letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 2rem;
+    }
+    #hero .accent-line {
+      width: 60px; height: 3px; background: var(--red); margin: 0 auto 2rem;
+      box-shadow: 0 0 12px var(--red);
+    }
+    #hero .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+    #hero .hero-badges { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+    #hero .scroll-down {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* FEATURES */
+    #features { background: var(--bg); }
+    #features .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    #features .feature-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    #features .feature-card:hover {
+      border-color: var(--red); transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,0,51,0.1);
+    }
+    #features .feature-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--orange));
+      transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+    }
+    #features .feature-card:hover::before { transform: scaleX(1); }
+    #features .feature-icon {
+      width: 48px; height: 48px; border-radius: 10px; background: rgba(255,0,51,0.1);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
+      font-size: 1.5rem; color: var(--red);
+    }
+    #features .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    #features .feature-card p { color: var(--muted); font-size: 0.9rem; }
+
+    /* GALLERY */
+    #gallery { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
+    #gallery .gallery-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    #gallery .gallery-item {
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      background: var(--bg); transition: all 0.3s; position: relative;
+    }
+    #gallery .gallery-item:hover { border-color: var(--red); transform: scale(1.02); }
+    #gallery .gallery-img {
+      width: 100%; height: 220px; object-fit: cover; display: block;
+      background: var(--bg2);
+    }
+    #gallery .gallery-caption {
+      padding: 1rem 1.5rem; font-size: 0.85rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    #gallery .gallery-caption strong { color: var(--text); display: block; margin-bottom: 0.25rem; }
+
+    /* TECH STACK */
+    #tech { background: var(--bg); }
+    #tech .tech-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    #tech .tech-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; text-align: center; transition: all 0.3s;
+    }
+    #tech .tech-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    #tech .tech-card .tech-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    #tech .tech-card h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+    #tech .tech-card p { font-size: 0.8rem; color: var(--muted); }
+
+    /* QUICK START */
+    #quickstart { background: var(--bg2); }
+    #quickstart .code-block {
+      background: #0a0a0a; border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.5rem; overflow-x: auto; position: relative;
+    }
+    #quickstart .code-block pre {
+      color: #ccc; font-family: var(--mono); font-size: 0.85rem; line-height: 1.8;
+    }
+    #quickstart .code-block .comment { color: #555; }
+    #quickstart .code-block .cmd { color: var(--red); }
+    #quickstart .code-block .flag { color: var(--orange); }
+    #quickstart .copy-btn {
+      position: absolute; top: 1rem; right: 1rem; background: var(--bg);
+      border: 1px solid var(--border); color: var(--muted); padding: 0.4rem 0.8rem;
+      border-radius: 6px; font-size: 0.75rem; cursor: pointer; transition: all 0.2s;
+    }
+    #quickstart .copy-btn:hover { border-color: var(--red); color: var(--red); }
+    #quickstart .steps { display: grid; gap: 1.5rem; margin-top: 2rem; }
+    #quickstart .step { display: flex; gap: 1rem; align-items: flex-start; }
+    #quickstart .step-num {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    }
+    #quickstart .step-content h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    #quickstart .step-content p { color: var(--muted); font-size: 0.9rem; }
+
+    /* DOCS */
+    #docs { background: var(--bg); }
+    #docs .docs-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    #docs .doc-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; transition: all 0.3s; display: block;
+    }
+    #docs .doc-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    #docs .doc-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    #docs .doc-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
+    #docs .doc-card .doc-link { font-size: 0.8rem; color: var(--red); font-weight: 600; letter-spacing: 0.05em; }
+
+    /* FOOTER */
+    footer {
+      background: #0a0a0a; border-top: 1px solid var(--border); padding: 3rem 0 2rem;
+    }
+    footer .footer-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem; margin-bottom: 2rem;
+    }
+    footer .footer-col h4 { font-size: 0.85rem; margin-bottom: 1rem; color: var(--text); letter-spacing: 0.08em; text-transform: uppercase; }
+    footer .footer-col a { display: block; color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+    footer .footer-col a:hover { color: var(--red); }
+    footer .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    footer .footer-bottom p { color: var(--muted); font-size: 0.8rem; }
+    footer .footer-bottom .footer-links { display: flex; gap: 1.5rem; }
+    footer .footer-bottom .footer-links a { color: var(--muted); font-size: 0.8rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .container { padding: 0 1.5rem; }
+      nav .nav-links { display: none; }
+      #hero h1 { font-size: 2rem; }
+      section { padding: 3rem 0; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo"></div>
-    <h1>KNIGHTDRAGONX OS</h1>
-    <p class="subtitle">Arch-based · Hyprland · HyDE · KDX Branding</p>
-    <div class="accent-line"></div>
-    <div>
-      <span class="badge highlight">Hyprland 0.56+</span>
-      <span class="badge highlight">HyDE</span>
-      <span class="badge">SDDM Corners</span>
-      <span class="badge">WiFi Hotspot</span>
-      <span class="badge">Wallbash</span>
-      <span class="badge">GPL-3.0</span>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-left">
+        <div class="nav-logo"></div>
+        <span class="nav-brand">KNIGHTDRAGONX OS</span>
+      </div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#tech">Tech</a>
+        <a href="#quickstart">Quick Start</a>
+        <a href="#docs">Docs</a>
+      </div>
+      <div class="nav-cta">
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os" class="btn btn-secondary" style="padding:0.5rem 1rem; font-size:0.8rem;">GitHub</a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.8rem;">Wiki</a>
+      </div>
     </div>
-    <div class="links">
-      <a href="https://github.com/KSitharanimsara/knightdragonx-os">GitHub Repository</a>
-      <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki">Documentation Wiki</a>
-      <a href="branding/brand-portfolio.html">Brand Portfolio</a>
-      <a href="docs/wiki/Installation">Installation Guide</a>
-      <a href="docs/wiki/Hotspot-Setup">Hotspot Setup</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-content">
+      <div class="hero-logo"></div>
+      <h1>KNIGHTDRAGONX <span>OS</span></h1>
+      <p class="subtitle">Arch-based · Hyprland · HyDE · KDX Branding</p>
+      <div class="accent-line"></div>
+      <div class="hero-cta">
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Installation" class="btn btn-primary">Get Started</a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os" class="btn btn-secondary">View Source</a>
+      </div>
+      <div class="hero-badges">
+        <span class="badge highlight">Hyprland 0.56+</span>
+        <span class="badge highlight">HyDE</span>
+        <span class="badge">SDDM Corners</span>
+        <span class="badge">WiFi Hotspot</span>
+        <span class="badge">Wallbash</span>
+        <span class="badge">GPL-3.0</span>
+      </div>
     </div>
-    <div class="footer">
-      KNIGHTDRAGONX OS · 2026 EDITION
+    <div class="scroll-down">Scroll</div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Why KnightDragonX OS?</h2>
+      <p class="section-subtitle">A professional Arch-based environment with the KnightDragonX brand identity baked in.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">&#x1F3AE;</div>
+          <h3>Gaming Ready</h3>
+          <p>Gaming workflow with optimized settings, Game Mode, and controller support. Steam, Proton, and Wine ready.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#x1F4F6;</div>
+          <h3>WiFi Hotspot</h3>
+          <p>Built-in AP mode repeater. Share your internet from any WiFi connection to mobile devices via <code>KDX-Hotspot</code>.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#x1F3A8;</div>
+          <h3>KDX Branding</h3>
+          <p>Custom SDDM theme, Wallbash theming, Rofi launcher, and Waybar styled with the official KDE red (#FF0033).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#x26A1;</div>
+          <h3>HyDE Powered</h3>
+          <p>HyDE shell integration for one-click theme switching, wallpaper management, and dynamic theming.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#x1F6E0;&#xFE0F;</div>
+          <h3>Restore Points</h3>
+          <p>Timeshift and Snapper integration for instant rollback. Stable restore point at 2026-07-26.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#x1F4BB;</div>
+          <h3>Developer Friendly</h3>
+          <p>Kitty terminal, VS Code theme, Git integration, and a complete dotfiles suite for reproducible setups.</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="container">
+      <h2 class="section-title">Gallery</h2>
+      <p class="section-subtitle">A preview of the KnightDragonX OS desktop experience.</p>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="configs/sddm/corners-theme/kdx_logo.jpg" alt="SDDM Login Screen" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <div class="gallery-caption"><strong>SDDM Login</strong>Corners theme with KDX branding</div>
+        </div>
+        <div class="gallery-item">
+          <img src="branding/wallpaper.png" alt="KDX Wallpaper" class="gallery-img" loading="lazy">
+          <div class="gallery-caption"><strong>Wallpaper</strong>Official KnightDragonX desktop background</div>
+        </div>
+        <div class="gallery-item">
+          <img src="configs/hyde/rofi/assets/launchpad.png" alt="Rofi Launcher" class="gallery-img" loading="lazy">
+          <div class="gallery-caption"><strong>Rofi Launcher</strong>KDX red accent theme</div>
+        </div>
+        <div class="gallery-item">
+          <img src="configs/hyde/rofi/assets/style_1.png" alt="Rofi Style" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <div class="gallery-caption"><strong>Rofi Theme</strong>Custom KDX styling</div>
+        </div>
+        <div class="gallery-item">
+          <img src="configs/hyde/rofi/assets/style_6.png" alt="Rofi Style 6" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <div class="gallery-caption"><strong>App Launcher</strong>Clean, minimal interface</div>
+        </div>
+        <div class="gallery-item">
+          <img src="configs/hyde/rofi/assets/notification.png" alt="Notification Style" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <div class="gallery-caption"><strong>Notifications</strong>SwayNC with KDX colors</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section id="tech">
+    <div class="container">
+      <h2 class="section-title">Tech Stack</h2>
+      <p class="section-subtitle">Built on proven, modern Linux technologies.</p>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F4BB;</div>
+          <h3>Arch Linux</h3>
+          <p>Rolling release base with AUR support</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F5A5;&#xFE0F;</div>
+          <h3>Hyprland</h3>
+          <p>Dynamic tiling Wayland compositor v0.56+</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F3A8;</div>
+          <h3>HyDE</h3>
+          <p>Shell integration and theme management</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F4F1;</div>
+          <h3>SDDM</h3>
+          <p>Login manager with Corners theme</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F4FA;</div>
+          <h3>Waybar</h3>
+          <p>Highly customizable status bar</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x2328;&#xFE0F;</div>
+          <h3>Kitty</h3>
+          <p>GPU-accelerated terminal emulator</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F50D;</div>
+          <h3>Rofi</h3>
+          <p>Application launcher and window switcher</p>
+        </div>
+        <div class="tech-card">
+          <div class="tech-icon">&#x1F4E1;</div>
+          <h3>Wallbash</h3>
+          <p>Dynamic theming based on wallpaper</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK START -->
+  <section id="quickstart">
+    <div class="container">
+      <h2 class="section-title">Quick Start</h2>
+      <p class="section-subtitle">Get up and running in minutes with these simple steps.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Clone the Repository</h3>
+            <p>Download the KDX configuration and branding files.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="cmd">git clone</span> https://github.com/KSitharanimsara/knightdragonx-os.git
+<span class="cmd">cd</span> knightdragonx-os</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Copy Configs</h3>
+            <p>Restore your user configuration files.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># Hyprland, Waybar, Rofi, Kitty, Kvantum</span>
+<span class="cmd">cp</span> -r configs/hyprland/* ~/.config/hypr/
+<span class="cmd">cp</span> -r configs/waybar/* ~/.config/waybar/
+<span class="cmd">cp</span> -r configs/rofi/* ~/.config/rofi/
+<span class="cmd">cp</span> -r configs/kitty/* ~/.config/kitty/
+<span class="cmd">cp</span> -r configs/kvantum/* ~/.config/Kvantum/
+
+<span class="comment"># HyDE shell</span>
+<span class="cmd">cp</span> -r configs/hyde/* ~/.local/share/hyde/
+
+<span class="comment"># Shell configs</span>
+<span class="cmd">cp</span> configs/system/zshrc ~/.zshrc
+<span class="cmd">cp</span> configs/system/bashrc ~/.bashrc</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Apply SDDM Theme</h3>
+            <p>Set up the login screen with KDX branding.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="cmd">sudo cp</span> -r configs/sddm/corners-theme /usr/share/sddm/themes/Corners
+<span class="cmd">sudo cp</span> configs/sddm/sddm.conf /etc/sddm.conf.d/the_hyde_project.conf</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>Enable Hotspot (Optional)</h3>
+            <p>Set up the WiFi repeater service for mobile sharing.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="cmd">sudo cp</span> scripts/hotspot/* /etc/hostapd/ /etc/dnsmasq.d/ /etc/sysctl.d/ /etc/systemd/system/ /usr/local/bin/
+<span class="cmd">sudo systemctl enable --now kdx-hotspot</span></pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h3>Reload & Enjoy</h3>
+            <p>Reload Hyprland and experience the KDX desktop.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="cmd">Super</span> + <span class="flag">Shift</span> + <span class="cmd">R</span></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCS -->
+  <section id="docs">
+    <div class="container">
+      <h2 class="section-title">Documentation</h2>
+      <p class="section-subtitle">Everything you need to install, configure, and troubleshoot KnightDragonX OS.</p>
+      <div class="docs-grid">
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Installation" class="doc-card">
+          <h3>&#x1F4DA; Installation</h3>
+          <p>Step-by-step Arch Linux base install and KDX configuration setup.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Hotspot-Setup" class="doc-card">
+          <h3>&#x1F4F6; Hotspot Setup</h3>
+          <p>Complete WiFi repeater/AP bridge guide with NAT and DHCP.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Branding" class="doc-card">
+          <h3>&#x1F3A8; Branding</h3>
+          <p>Logos, color palette, SDDM theme, and Wallbash integration.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Configuration" class="doc-card">
+          <h3>&#x2699;&#xFE0F; Configuration</h3>
+          <p>Hyprland, Waybar, Rofi, Kitty, Kvantum, HyDE, and shell configs.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Restore-Points" class="doc-card">
+          <h3>&#x1F4BB; Restore Points</h3>
+          <p>Timeshift and Snapper backup workflows and recovery procedures.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Troubleshooting" class="doc-card">
+          <h3>&#x1F6E0;&#xFE0F; Troubleshooting</h3>
+          <p>Common issues, fixes, and emergency recovery steps.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Project</h4>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os">Repository</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki">Wiki</a>
+          <a href="https://KSitharanimsara.github.io/knightdragonx-os">Website</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/issues">Issues</a>
+        </div>
+        <div class="footer-col">
+          <h4>Docs</h4>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Installation">Installation</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Hotspot-Setup">Hotspot</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Branding">Branding</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Configuration">Configuration</a>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os">GitHub</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/issues">Report Bug</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/pulls">Contribute</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="LICENSE">GPL-3.0 License</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os">Source Code</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 KnightDragonX OS. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os">GitHub</a>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki">Wiki</a>
+          <a href="https://KSitharanimsara.github.io/knightdragonx-os">Website</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.nextElementSibling;
+      const text = pre.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+    document.querySelectorAll('nav .nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
 </body>
 </html>
