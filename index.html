@@ -246,9 +246,102 @@
     @media (max-width: 768px) {
       .container { padding: 0 1.5rem; }
       nav .nav-links { display: none; }
+      nav .nav-links.mobile-open {
+        display: flex; flex-direction: column; position: absolute;
+        top: 64px; left: 0; right: 0; background: rgba(17,17,17,0.95);
+        backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+        padding: 1rem 2rem; gap: 1rem;
+      }
+      nav .nav-links.mobile-open a { padding: 0.5rem 0; }
+      .hamburger { display: flex !important; }
       #hero h1 { font-size: 2rem; }
       section { padding: 3rem 0; }
     }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      background: none; border: none; padding: 0.5rem;
+    }
+    .hamburger span {
+      width: 24px; height: 2px; background: var(--text); transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    /* REQUIREMENTS */
+    #requirements { background: var(--bg); }
+    #requirements .req-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    #requirements .req-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.5rem; text-align: center; transition: all 0.3s;
+    }
+    #requirements .req-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    #requirements .req-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    #requirements .req-card h3 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+    #requirements .req-card p { font-size: 0.8rem; color: var(--muted); }
+    #requirements .req-card .req-spec { color: var(--orange); font-weight: 600; font-size: 0.85rem; margin-top: 0.5rem; }
+
+    /* SHORTCUTS */
+    #shortcuts { background: var(--bg2); }
+    #shortcuts .shortcuts-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    #shortcuts .shortcut-item {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.5rem; transition: all 0.2s;
+    }
+    #shortcuts .shortcut-item:hover { border-color: var(--red); }
+    #shortcuts .shortcut-keys {
+      display: flex; gap: 0.4rem; flex-shrink: 0;
+    }
+    #shortcuts .key {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.3rem 0.6rem; font-family: var(--mono); font-size: 0.75rem;
+      color: var(--text); font-weight: 600; min-width: 28px; text-align: center;
+    }
+    #shortcuts .key.primary { background: var(--red); border-color: var(--red); color: #fff; }
+    #shortcuts .shortcut-desc { font-size: 0.85rem; color: var(--muted); }
+
+    /* DOWNLOAD */
+    #download { background: var(--bg); text-align: center; }
+    #download .download-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    #download .download-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 2rem; transition: all 0.3s; text-align: left;
+    }
+    #download .download-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    #download .download-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    #download .download-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    #download .download-card .btn { width: 100%; justify-content: center; }
+
+    /* GALLERY IMPROVEMENTS */
+    #gallery .gallery-item {
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      background: var(--bg); transition: all 0.3s; position: relative;
+    }
+    #gallery .gallery-item:hover { border-color: var(--red); transform: scale(1.02); }
+    #gallery .gallery-img {
+      width: 100%; height: 220px; object-fit: cover; display: block;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--border) 100%);
+    }
+    #gallery .gallery-img-fallback {
+      width: 100%; height: 220px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(255,0,51,0.05) 100%);
+      color: var(--muted); font-size: 3rem; border-bottom: 1px solid var(--border);
+    }
+    #gallery .gallery-caption {
+      padding: 1rem 1.5rem; font-size: 0.85rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    #gallery .gallery-caption strong { color: var(--text); display: block; margin-bottom: 0.25rem; }
   </style>
 </head>
 <body>
@@ -264,9 +357,14 @@
         <a href="#features">Features</a>
         <a href="#gallery">Gallery</a>
         <a href="#tech">Tech</a>
+        <a href="#requirements">Requirements</a>
+        <a href="#shortcuts">Shortcuts</a>
         <a href="#quickstart">Quick Start</a>
         <a href="#docs">Docs</a>
       </div>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
       <div class="nav-cta">
         <a href="https://github.com/KSitharanimsara/knightdragonx-os" class="btn btn-secondary" style="padding:0.5rem 1rem; font-size:0.8rem;">GitHub</a>
         <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.8rem;">Wiki</a>
@@ -291,6 +389,7 @@
         <span class="badge">SDDM Corners</span>
         <span class="badge">WiFi Hotspot</span>
         <span class="badge">Wallbash</span>
+        <span class="badge highlight" style="border-color:var(--orange);color:var(--orange);">Stable: 2026-07-26</span>
         <span class="badge">GPL-3.0</span>
       </div>
     </div>
@@ -344,27 +443,33 @@
       <p class="section-subtitle">A preview of the KnightDragonX OS desktop experience.</p>
       <div class="gallery-grid">
         <div class="gallery-item">
-          <img src="configs/sddm/corners-theme/kdx_logo.jpg" alt="SDDM Login Screen" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <img src="configs/sddm/corners-theme/kdx_logo.jpg" alt="SDDM Login Screen" class="gallery-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="gallery-img-fallback" style="display:none;">&#x1F3AE;</div>
           <div class="gallery-caption"><strong>SDDM Login</strong>Corners theme with KDX branding</div>
         </div>
         <div class="gallery-item">
-          <img src="branding/wallpaper.png" alt="KDX Wallpaper" class="gallery-img" loading="lazy">
+          <img src="branding/wallpaper.png" alt="KDX Wallpaper" class="gallery-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="gallery-img-fallback" style="display:none;">&#x1F3A8;</div>
           <div class="gallery-caption"><strong>Wallpaper</strong>Official KnightDragonX desktop background</div>
         </div>
         <div class="gallery-item">
-          <img src="configs/hyde/rofi/assets/launchpad.png" alt="Rofi Launcher" class="gallery-img" loading="lazy">
+          <img src="configs/hyde/rofi/assets/launchpad.png" alt="Rofi Launcher" class="gallery-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="gallery-img-fallback" style="display:none;">&#x2328;&#xFE0F;</div>
           <div class="gallery-caption"><strong>Rofi Launcher</strong>KDX red accent theme</div>
         </div>
         <div class="gallery-item">
-          <img src="configs/hyde/rofi/assets/style_1.png" alt="Rofi Style" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <img src="configs/hyde/rofi/assets/style_1.png" alt="Rofi Style" class="gallery-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="gallery-img-fallback" style="display:none;">&#x1F50D;</div>
           <div class="gallery-caption"><strong>Rofi Theme</strong>Custom KDX styling</div>
         </div>
         <div class="gallery-item">
-          <img src="configs/hyde/rofi/assets/style_6.png" alt="Rofi Style 6" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <img src="configs/hyde/rofi/assets/style_6.png" alt="Rofi Style 6" class="gallery-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="gallery-img-fallback" style="display:none;">&#x1F4FA;</div>
           <div class="gallery-caption"><strong>App Launcher</strong>Clean, minimal interface</div>
         </div>
         <div class="gallery-item">
-          <img src="configs/hyde/rofi/assets/notification.png" alt="Notification Style" class="gallery-img" loading="lazy" onerror="this.style.display='none'">
+          <img src="configs/hyde/rofi/assets/notification.png" alt="Notification Style" class="gallery-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="gallery-img-fallback" style="display:none;">&#x1F514;</div>
           <div class="gallery-caption"><strong>Notifications</strong>SwayNC with KDX colors</div>
         </div>
       </div>
@@ -416,6 +521,151 @@
           <div class="tech-icon">&#x1F4E1;</div>
           <h3>Wallbash</h3>
           <p>Dynamic theming based on wallpaper</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEM REQUIREMENTS -->
+  <section id="requirements">
+    <div class="container">
+      <h2 class="section-title">System Requirements</h2>
+      <p class="section-subtitle">Minimum and recommended specs for running KnightDragonX OS.</p>
+      <div class="req-grid">
+        <div class="req-card">
+          <div class="req-icon">&#x1F4BB;</div>
+          <h3>OS</h3>
+          <p>Arch Linux or Arch-based distro</p>
+          <div class="req-spec">Rolling release</div>
+        </div>
+        <div class="req-card">
+          <div class="req-icon">&#x1F5A5;&#xFE0F;</div>
+          <h3>GPU</h3>
+          <p>AMD / Intel / NVIDIA</p>
+          <div class="req-spec">Mesa or nvidia-dkms</div>
+        </div>
+        <div class="req-card">
+          <div class="req-icon">&#x1F4BF;</div>
+          <h3>RAM</h3>
+          <p>Minimum for Hyprland + apps</p>
+          <div class="req-spec">4 GB min / 8 GB rec.</div>
+        </div>
+        <div class="req-card">
+          <div class="req-icon">&#x1F6E0;&#xFE0F;</div>
+          <h3>Storage</h3>
+          <p>Base system + configs + apps</p>
+          <div class="req-spec">30 GB min / 60 GB rec.</div>
+        </div>
+        <div class="req-card">
+          <div class="req-icon">&#x1F4F1;</div>
+          <h3>WiFi</h3>
+          <p>AP + managed concurrent mode</p>
+          <div class="req-spec">RTL8852BE tested</div>
+        </div>
+        <div class="req-card">
+          <div class="req-icon">&#x1F4E6;</div>
+          <h3>Boot</h3>
+          <p>UEFI recommended</p>
+          <div class="req-spec">64-bit x86_64</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEYBOARD SHORTCUTS -->
+  <section id="shortcuts">
+    <div class="container">
+      <h2 class="section-title">Keyboard Shortcuts</h2>
+      <p class="section-subtitle">Essential keybindings for the KDX Hyprland desktop.</p>
+      <div class="shortcuts-grid">
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Q</span>
+          </div>
+          <div class="shortcut-desc">Open terminal (Kitty)</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">A</span>
+          </div>
+          <div class="shortcut-desc">Open application launcher (Rofi)</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Tab</span>
+          </div>
+          <div class="shortcut-desc">Window switcher</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Shift</span>
+            <span class="key">Q</span>
+          </div>
+          <div class="shortcut-desc">Close focused window</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Shift</span>
+            <span class="key">R</span>
+          </div>
+          <div class="shortcut-desc">Reload Hyprland config</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">L</span>
+          </div>
+          <div class="shortcut-desc">Lock screen (Hyprlock)</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Shift</span>
+            <span class="key">E</span>
+          </div>
+          <div class="shortcut-desc">Open file manager (Dolphin)</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">V</span>
+          </div>
+          <div class="shortcut-desc">Open clipboard manager</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Space</span>
+          </div>
+          <div class="shortcut-desc">Toggle floating / tiling</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">1-9</span>
+          </div>
+          <div class="shortcut-desc">Switch workspace</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Shift</span>
+            <span class="key">1-9</span>
+          </div>
+          <div class="shortcut-desc">Move window to workspace</div>
+        </div>
+        <div class="shortcut-item">
+          <div class="shortcut-keys">
+            <span class="key primary">Super</span>
+            <span class="key">Alt</span>
+            <span class="key">G</span>
+          </div>
+          <div class="shortcut-desc">Toggle gaming workflow</div>
         </div>
       </div>
     </div>
@@ -541,6 +791,38 @@
     </div>
   </section>
 
+  <!-- DOWNLOAD / GET CONFIGS -->
+  <section id="download">
+    <div class="container">
+      <h2 class="section-title">Get KnightDragonX OS</h2>
+      <p class="section-subtitle" style="margin:0 auto 2rem;">Clone the repository or download an archive to get started.</p>
+      <div class="download-cards">
+        <div class="download-card">
+          <h3>&#x1F4E6; Clone with Git</h3>
+          <p>Best for developers. Full history, easy updates, and instant access to all configs.</p>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+        <div class="download-card">
+          <h3>&#x1F4C2; Download ZIP</h3>
+          <p>No Git required. Download the latest stable configs as a ZIP archive.</p>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/archive/refs/heads/main.zip" class="btn btn-secondary">
+            Download main.zip
+          </a>
+        </div>
+        <div class="download-card">
+          <h3>&#x1F4F6; Hotspot Scripts</h3>
+          <p>Just want the WiFi hotspot service? Grab the scripts and configs directly.</p>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/tree/main/scripts/hotspot" class="btn btn-secondary">
+            View Hotspot Files
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div class="container">
@@ -591,8 +873,20 @@
         setTimeout(() => btn.textContent = 'Copy', 2000);
       });
     }
+    function toggleMenu() {
+      const links = document.querySelector('.nav-links');
+      const hamburger = document.querySelector('.hamburger');
+      links.classList.toggle('mobile-open');
+      hamburger.classList.toggle('open');
+    }
     document.querySelectorAll('nav .nav-links a').forEach(link => {
       link.addEventListener('click', () => {
+        const links = document.querySelector('.nav-links');
+        const hamburger = document.querySelector('.hamburger');
+        if (links.classList.contains('mobile-open')) {
+          links.classList.remove('mobile-open');
+          hamburger.classList.remove('open');
+        }
         document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
       });
     });
