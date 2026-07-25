@@ -358,6 +358,7 @@
         <a href="#gallery">Gallery</a>
         <a href="#tech">Tech</a>
         <a href="#requirements">Requirements</a>
+        <a href="#install">Installation</a>
         <a href="#shortcuts">Shortcuts</a>
         <a href="#quickstart">Quick Start</a>
         <a href="#docs">Docs</a>
@@ -671,11 +672,217 @@
     </div>
   </section>
 
+  <!-- INSTALLATION GUIDE -->
+  <section id="install">
+    <div class="container">
+      <h2 class="section-title">Installation Guide</h2>
+      <p class="section-subtitle">Complete step-by-step Arch Linux install with KDX configuration and black screen fixes.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Pre-Installation</h3>
+            <p>Boot the Arch ISO, verify UEFI mode, identify your GPU, and connect to the internet.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># Verify UEFI</span>
+ls /sys/firmware/efi/efivars
+
+<span class="comment"># Identify GPU (critical for avoiding black screen)</span>
+lspci -k -nn | grep -A 5 "VGA"
+
+<span class="comment"># Connect to WiFi if no ethernet</span>
+iwctl
+<span class="comment"># station wlo1 connect YOUR_SSID</span></pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Partition & Format</h3>
+            <p>Create GPT partitions: 512MB EFI + root partition. Format as FAT32 and ext4.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># Example: /dev/nvme0n1</span>
+fdisk /dev/nvme0n1
+<span class="comment"># Create EFI (512M) + root (rest) partitions</span>
+
+mkfs.fat -F32 /dev/nvme0n1p1
+mkfs.ext4 /dev/nvme0n1p2
+
+mount /dev/nvme0n1p2 /mnt
+mkdir -p /mnt/boot
+mount /dev/nvme0n1p1 /mnt/boot</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Install Base System</h3>
+            <p>Install core system, GPU drivers, and essential packages. <strong>Install GPU drivers BEFORE rebooting.</strong></p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># Base system</span>
+pacstrap /mnt base linux linux-firmware base-devel
+
+<span class="comment"># GPU drivers (choose one)</span>
+<span class="comment"># NVIDIA (MOST IMPORTANT - prevents black screen):</span>
+pacstrap /mnt nvidia-dkms nvidia-utils
+<span class="comment"># AMD:</span>
+<span class="comment"># pacstrap /mnt mesa xf86-video-amdgpu</span>
+<span class="comment"># Intel:</span>
+<span class="comment"># pacstrap /mnt mesa intel-media-driver</span>
+
+<span class="comment"># Essential packages</span>
+pacstrap /mnt \
+  git vim nano networkmanager \
+  hyprland xdg-desktop-portal-hyprland \
+  sddm waybar rofi kitty \
+  kvantum qt5ct qt6ct \
+  dunst swaync \
+  pipewire wireplumber \
+  fastfetch hyde-shell \
+  efibootmgr grub os-prober</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h3>System Configuration</h3>
+            <p>Set timezone, locale, hostname, install GRUB bootloader, and create user. <strong>NVIDIA users must add kernel parameters.</strong></p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># Generate fstab and chroot</span>
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+
+<span class="comment"># Timezone & locale</span>
+ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+hwclock --systohc
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+
+<span class="comment"># Hostname</span>
+echo "knightdragonx" > /etc/hostname
+
+<span class="comment"># GRUB (NVIDIA: add kernel params)</span>
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+<span class="comment"># For NVIDIA, create /etc/default/grub with:</span>
+<span class="comment"># GRUB_CMDLINE_LINUX_DEFAULT="quiet splash module_blacklist=nouveau nvidia_drm.modeset=1"</span>
+grub-mkconfig -o /boot/grub/grub.cfg
+mkinitcpio -P
+
+<span class="comment"># Root password & user</span>
+passwd
+useradd -m -G wheel,audio,video -s /bin/zsh kdx
+passwd kdx
+<span class="comment"># Edit sudo: uncomment %wheel ALL=(ALL:ALL) ALL</span>
+EDITOR=vim visudo</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h3>SDDM & Services</h3>
+            <p>Configure SDDM display manager and enable essential services.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># SDDM config</span>
+mkdir -p /etc/sddm.conf.d
+cat > /etc/sddm.conf.d/the_hyde_project.conf << 'EOF'
+[Autologin]
+Relogin=false
+Session=
+User=
+
+[General]
+HaltCommand=/usr/bin/systemctl poweroff
+RebootCommand=/usr/bin/systemctl reboot
+DisplayServer=wayland
+
+[Theme]
+Current=Corners
+
+[Users]
+MaximumUid=60513
+MinimumUid=1000
+EOF
+
+<span class="comment"># Enable services</span>
+systemctl enable NetworkManager
+systemctl enable sddm
+
+<span class="comment"># Exit and reboot</span>
+exit
+umount -R /mnt
+reboot</pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h3>Post-Install & Black Screen Check</h3>
+            <p>Boot into your system. If you get a black screen, follow the recovery steps below before proceeding.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># If black screen occurs:</span>
+<span class="comment"># 1. Switch to TTY: Ctrl+Alt+F2</span>
+<span class="comment"># 2. Check logs:</span>
+journalctl -b -p err --no-pager | tail -50
+
+<span class="comment"># 3. Test Hyprland manually:</span>
+export XDG_RUNTIME_DIR=/run/user/$(id -u)
+exec Hyprland
+
+<span class="comment"># 4. If Hyprland starts in TTY but not SDDM:</span>
+<span class="comment">#    The issue is with SDDM/display manager</span>
+<span class="comment">#    Try: DisplayServer=wayland in sddm.conf</span></pre>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h3>Apply KDX Configuration</h3>
+            <p>Clone the repo and copy configs to restore the KDX desktop.</p>
+            <div class="code-block" style="margin-top:1rem;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="comment"># Clone repo</span>
+git clone https://github.com/KSitharanimsara/knightdragonx-os.git
+cd knightdragonx-os
+
+<span class="comment"># Copy configs</span>
+cp -r configs/hyprland/* ~/.config/hypr/
+cp -r configs/waybar/* ~/.config/waybar/
+cp -r configs/rofi/* ~/.config/rofi/
+cp -r configs/kitty/* ~/.config/kitty/
+cp -r configs/kvantum/* ~/.config/Kvantum/
+cp -r configs/hyde/* ~/.local/share/hyde/
+cp configs/system/zshrc ~/.zshrc
+
+<span class="comment"># Apply SDDM theme</span>
+sudo cp -r configs/sddm/corners-theme /usr/share/sddm/themes/Corners
+sudo cp configs/sddm/sddm.conf /etc/sddm.conf.d/the_hyde_project.conf
+
+<span class="comment"># Reload</span>
+Super + Shift + R</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- QUICK START -->
   <section id="quickstart">
     <div class="container">
       <h2 class="section-title">Quick Start</h2>
-      <p class="section-subtitle">Get up and running in minutes with these simple steps.</p>
+      <p class="section-subtitle">Already have Arch installed? Get the KDX configs in 60 seconds.</p>
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
@@ -748,6 +955,10 @@
           </div>
         </div>
       </div>
+      <div style="text-align:center; margin-top:3rem; padding:2rem; background:var(--bg2); border-radius:12px; border:1px solid var(--border);">
+        <p style="color:var(--muted); margin-bottom:1rem; font-size:0.95rem;">Need to install Arch Linux from scratch?</p>
+        <a href="#install" class="btn btn-primary">Read Full Installation Guide</a>
+      </div>
     </div>
   </section>
 
@@ -758,8 +969,13 @@
       <p class="section-subtitle">Everything you need to install, configure, and troubleshoot KnightDragonX OS.</p>
       <div class="docs-grid">
         <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Installation" class="doc-card">
-          <h3>&#x1F4DA; Installation</h3>
-          <p>Step-by-step Arch Linux base install and KDX configuration setup.</p>
+          <h3>&#x1F4DA; Installation Guide</h3>
+          <p>Complete step-by-step Arch Linux install with KDX setup. Includes GPU driver installation, SDDM configuration, and post-install steps.</p>
+          <span class="doc-link">Read Guide &rarr;</span>
+        </a>
+        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Black-Screen-Fix" class="doc-card">
+          <h3>&#x1F6AB; Black Screen Fix</h3>
+          <p>Diagnose and fix black screen issues. Covers NVIDIA/AMD/Intel GPU problems, SDDM X11 conflicts, kernel parameters, and recovery steps.</p>
           <span class="doc-link">Read Guide &rarr;</span>
         </a>
         <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Hotspot-Setup" class="doc-card">
