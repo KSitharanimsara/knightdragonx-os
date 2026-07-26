@@ -10,12 +10,10 @@
 |------|-------------|
 | [Installation](Installation) | Complete step-by-step Arch install with GPU setup |
 | [Black Screen Fix](Black-Screen-Fix) | Diagnose and fix black screen issues (NVIDIA/AMD/Intel) |
-| [Hotspot Setup](Hotspot-Setup) | WiFi repeater / AP + NAT bridge |
 | [Branding](Branding) | Logos, colors, SDDM theme, Wallbash |
 | [Configuration](Configuration) | Hyprland, Waybar, Rofi, Kitty, Kvantum |
 | [Restore Points](Restore-Points) | Timeshift / Snapper backup guide |
 | [Troubleshooting](Troubleshooting) | Common issues and fixes |
-| [Automated Installer](Automated-Installer) | One-command installer and post-install scripts |
 | [Automated Installer](Automated-Installer) | One-command installer and post-install scripts |
 
 ---
@@ -26,7 +24,6 @@ KnightDragonX OS is an **Arch-based Linux distribution** focused on the KnightDr
 
 - **Hyprland** compositor with **HyDE** tooling and one-click theme switching
 - **SDDM Corners** login manager with custom KDX branding
-- **KDX Hotspot** WiFi repeater service (AP + NAT bridge)
 - **Wallbash** dynamic theming based on wallpaper colors
 - **KDE red** (`#FF0033`) accent palette throughout every component
 - **Tela-circle-dracula** icon theme for a consistent circular look
@@ -155,9 +152,6 @@ Super + Shift + R
 
 | Issue | Fix |
 |-------|-----|
-| Hotspot won't start | Check `sudo journalctl -xeu kdx-hotspot` |
-| `wlo1_ap` missing | `sudo iw dev wlo1_ap del && sudo iw phy phy0 interface add wlo1_ap type __ap` |
-| No internet on mobile | Verify NAT: `sudo iptables -t nat -L POSTROUTING` |
 | SDDM theme not applying | Check `/etc/sddm.conf.d/the_hyde_project.conf` |
 | Hyprland reload errors | Validate `userprefs.conf` — window rules belong in `windowrules.conf` |
 | Black screen after install | Switch to TTY: Ctrl+Alt+F2, check logs with `journalctl -b -p err` |

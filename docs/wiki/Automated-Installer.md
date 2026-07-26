@@ -108,9 +108,10 @@ knightdragonx-os/
 └── docs/wiki/
     ├── Installation.md
     ├── Black-Screen-Fix.md
-    ├── Hotspot-Setup.md
     ├── Branding.md
     ├── Configuration.md
     ├── Restore-Points.md
     └── Troubleshooting.md
 ```
+
+> **Note:** The WiFi hotspot feature was removed because the Realtek rtw89 driver does not support reliable AP mode while maintaining a primary WiFi connection. Internet access must remain on the primary network.

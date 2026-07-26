@@ -28,48 +28,6 @@ To add new app sizes, edit that file and reload.
 
 ---
 
-## WiFi / Hotspot
-
-### Hotspot won’t start
-```bash
-# Check service status
-sudo systemctl status kdx-hotspot
-
-# Check logs
-sudo journalctl -xeu kdx-hotspot
-
-# Common fixes
-sudo iw dev wlo1_ap del
-sudo systemctl restart kdx-hotspot
-```
-
-### `wlo1_ap` interface missing
-```bash
-# Recreate virtual AP
-sudo iw dev wlo1_ap del 2>/dev/null || true
-sudo iw phy phy0 interface add wlo1_ap type __ap
-sudo ip link set dev wlo1_ap address 02:00:00:00:00:01
-sudo ip link set wlo1_ap up
-```
-
-### No internet on mobile
-```bash
-# Verify NAT rules
-sudo iptables -t nat -L POSTROUTING -v
-
-# Verify kdx WiFi is connected
-nmcli connection show --active
-
-# Restart hotspot
-sudo systemctl restart kdx-hotspot
-```
-
-### MAC address conflict
-Virtual AP uses `02:00:00:00:00:01`.  
-If still conflicting, edit `kdx-hotspot-start.sh` and change the MAC.
-
----
-
 ## SDDM
 
 ### Theme not applying

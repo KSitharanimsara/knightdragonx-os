@@ -8,7 +8,7 @@ This guide covers installing Arch Linux and setting up the KnightDragonX OS conf
 
 - UEFI system recommended
 - 30 GB+ free disk space
-- Internet connection (wired or mobile hotspot)
+- Internet connection (wired)
 - Arch Linux ISO (latest from https://archlinux.org/download/)
 
 ---
@@ -371,22 +371,8 @@ hyprctl reload
 
 ---
 
-## Phase 6: Hotspot Service (Optional)
 
-```bash
-sudo cp scripts/hotspot/* /etc/hostapd/ /etc/dnsmasq.d/ /etc/sysctl.d/ /etc/systemd/system/ /usr/local/bin/
-sudo systemctl enable --now kdx-hotspot
-```
-
-Verify:
-```bash
-sudo systemctl status kdx-hotspot
-sudo iw dev wlo1_ap info
-```
-
----
-
-## Phase 7: Post-Install
+## Phase 6: Post-Install
 
 - Connect to WiFi: `nmtui` or click network applet
 - Set wallpaper: use HyDE theme switcher or `hyprctl`
@@ -407,7 +393,6 @@ sudo iw dev wlo1_ap info
 - [ ] SDDM shows KDX branding (red accents, wallpaper)
 - [ ] Rofi launcher works (`Super + A`)
 - [ ] Terminal opens (`Super + Q`)
-- [ ] Hotspot works (optional): `sudo systemctl start kdx-hotspot`
 - [ ] No black screen on reboot
 
 ---
@@ -420,7 +405,6 @@ sudo iw dev wlo1_ap info
 | No WiFi | `sudo systemctl enable --now NetworkManager`, `nmtui` |
 | No audio | `systemctl --user enable --now pipewire pipewire-pulse wireplumber` |
 | SDDM theme not loading | Verify `/etc/sddm.conf.d/the_hyde_project.conf` |
-| Hotspot fails | Check `sudo journalctl -xeu kdx-hotspot` |
 | Touchpad issues | Check `~/.config/hypr/userprefs.conf` touchpad settings |
 | Apps look wrong | Ensure GTK_THEME and QT_STYLE_OVERRIDE are set in `~/.zshenv` |
 

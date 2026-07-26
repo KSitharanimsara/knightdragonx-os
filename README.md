@@ -25,7 +25,6 @@ KnightDragonX OS is an Arch-based Linux distribution focused on the **KnightDrag
 
 - **Hyprland** compositor + **HyDE** tooling with one-click theme switching
 - **SDDM Corners** login manager with KDX branding
-- **KDX Hotspot** WiFi repeater service (AP + NAT bridge)
 - **Wallbash** dynamic theming based on wallpaper
 - **Waybar**, **Rofi**, **Kitty**, **Kvantum** with KDX styling
 - **Tela-circle-dracula** icon theme
@@ -100,10 +99,6 @@ cp configs/system/zshrc ~/.zshrc
 cp configs/system/bashrc ~/.bashrc
 cp configs/system/zshenv ~/.zshenv
 
-# Install hotspot service (optional)
-sudo cp scripts/hotspot/* /etc/hostapd/ /etc/dnsmasq.d/ /etc/sysctl.d/ /etc/systemd/system/ /usr/local/bin/
-sudo systemctl enable --now kdx-hotspot
-
 # Apply SDDM theme (optional)
 sudo cp -r configs/sddm/corners-theme /usr/share/sddm/themes/Corners
 sudo cp configs/sddm/sddm.conf /etc/sddm.conf.d/the_hyde_project.conf
@@ -129,9 +124,8 @@ knightdragonx-os/
 │   └── system/            # Shell, GTK, fastfetch, fish configs
 ├── scripts/
 │   ├── installer.sh          # System installer (root): GPU drivers, services, SDDM
-│   ├── post-install.sh       # User setup: configs, theme, shell
-│   └── hotspot/              # WiFi hotspot systemd service + configs
-├── restore-points/        # Backup + hotspot build guide
+│   └── post-install.sh       # User setup: configs, theme, shell
+├── restore-points/        # Backup guide
 ├── docs/                  # Install guide, wiki source
 └── .github/               # Issue templates, workflows
 ```
@@ -147,7 +141,7 @@ For complete Arch Linux installation instructions:
 3. **Install Base System** - pacstrap with GPU drivers (CRITICAL: NVIDIA before reboot)
 4. **System Configuration** - Timezone, locale, hostname, GRUB, user creation
 5. **SDDM & Services** - Configure SDDM, enable NetworkManager and sddm
-6. **Post-Install** - Install KDX configs, apply SDDM theme, start hotspot
+6. **Post-Install** - Install KDX configs, apply SDDM theme
 7. **Verification** - Check all components are working
 
 See [docs/wiki/Installation.md](docs/wiki/Installation.md) for the full guide.
@@ -156,29 +150,7 @@ See [docs/wiki/Installation.md](docs/wiki/Installation.md) for the full guide.
 
 ## WiFi Hotspot
 
-Quick summary:
-
-| Setting | Value |
-|---------|-------|
-| **SSID** | `KDX-Hotspot` |
-| **Password** | `kdx12345` |
-| **Client subnet** | `192.168.10.0/24` |
-| **Internet** | Shared from primary WiFi connection |
-| **Service** | `kdx-hotspot.service` |
-
-```bash
-# Start/stop hotspot
-sudo systemctl start kdx-hotspot
-sudo systemctl stop kdx-hotspot
-
-# Check status
-sudo systemctl status kdx-hotspot
-
-# View logs
-sudo journalctl -xeu kdx-hotspot
-```
-
-See [docs/wiki/Hotspot-Setup.md](docs/wiki/Hotspot-Setup.md) for full documentation.
+> **Note:** The KDX Hotspot service has been removed. The Realtek rtw89 driver does not support reliable AP mode on this hardware while maintaining a primary WiFi connection. Internet access must remain on the primary `kdx` network.
 
 ---
 
@@ -191,7 +163,7 @@ sudo timeshift --create --comments "KDX-stable-2026-07-26"
 
 ### Snapper (btrfs)
 ```bash
-sudo snapper -c root create --description "KDX hotspot stable point"
+sudo snapper -c root create --description "KDX stable point"
 ```
 
 ### Manual backup
@@ -234,7 +206,6 @@ Yes! Includes gaming workflow with optimized settings, Steam/Proton/Wine support
 |----------|-------------|
 | [Installation](docs/wiki/Installation.md) | Complete Arch install with KDX setup |
 | [Black Screen Fix](docs/wiki/Black-Screen-Fix.md) | GPU-specific troubleshooting |
-| [Hotspot Setup](docs/wiki/Hotspot-Setup.md) | WiFi repeater configuration |
 | [Branding](docs/wiki/Branding.md) | Colors, logos, theme integration |
 | [Configuration](docs/wiki/Configuration.md) | Hyprland, Waybar, Rofi, Kitty |
 | [Restore Points](docs/wiki/Restore-Points.md) | Backup and recovery |

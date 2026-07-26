@@ -44,13 +44,6 @@ sudo snapper -c root undochange 42..43
 
 ### System Configs
 ```bash
-# Hotspot service
-sudo cp /etc/systemd/system/kdx-hotspot.service /backup/
-sudo cp /usr/local/bin/kdx-hotspot-*.sh /backup/
-sudo cp /etc/hostapd/hostapd-wlo1.conf /backup/
-sudo cp /etc/dnsmasq.d/wlo1_ap.conf /backup/
-sudo cp /etc/sysctl.d/99-kdx-hotspot.conf /backup/
-
 # SDDM theme
 sudo cp -r /usr/share/sddm/themes/Corners /backup/
 sudo cp /etc/sddm.conf.d/the_hyde_project.conf /backup/
@@ -85,13 +78,6 @@ cp branding/wallpaper.png ~/backup/
 ## Restore from Backup
 
 ```bash
-# System configs
-sudo cp /backup/kdx-hotspot.service /etc/systemd/system/
-sudo cp /backup/kdx-hotspot-*.sh /usr/local/bin/
-sudo cp /backup/hostapd-wlo1.conf /etc/hostapd/
-sudo cp /backup/wlo1_ap.conf /etc/dnsmasq.d/
-sudo cp /backup/99-kdx-hotspot.conf /etc/sysctl.d/
-
 # User configs
 cp -r ~/backup/hypr/* ~/.config/hypr/
 cp -r ~/backup/waybar/* ~/.config/waybar/
@@ -99,7 +85,6 @@ cp -r ~/backup/rofi/* ~/.config/rofi/
 
 # Reload
 hyprctl reload
-sudo systemctl daemon-reload
 ```
 
 ---
@@ -109,7 +94,6 @@ sudo systemctl daemon-reload
 Use this checklist when creating a new restore point:
 
 - [ ] `kdx` WiFi connected and auto-reconnect enabled
-- [ ] `KDX-Hotspot` service enabled and running
 - [ ] SDDM Corners theme with KDX branding applied
 - [ ] Hyprland configs validated (`hyprctl reload` clean)
 - [ ] Wallpaper set to `kdx_wallpaper.png`

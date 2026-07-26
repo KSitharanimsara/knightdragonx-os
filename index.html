@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KnightDragonX OS — Arch-based Hyprland Distribution</title>
-  <meta name="description" content="KnightDragonX OS is an Arch-based Linux distribution featuring Hyprland, HyDE, KDX branding, and a built-in WiFi hotspot service.">
+  <meta name="description" content="KnightDragonX OS is an Arch-based Linux distribution featuring Hyprland, HyDE, KDX branding, and Wallbash dynamic theming.">
   <style>
     :root {
       --red: #FF0033;
@@ -446,7 +446,6 @@
         <span class="badge highlight">Hyprland 0.56+</span>
         <span class="badge highlight">HyDE</span>
         <span class="badge">SDDM Corners</span>
-        <span class="badge">WiFi Hotspot</span>
         <span class="badge">Wallbash</span>
         <span class="badge highlight" style="border-color:var(--orange);color:var(--orange);">Stable: 2026-07-26</span>
         <span class="badge">GPL-3.0</span>
@@ -465,11 +464,6 @@
           <div class="feature-icon">&#x1F3AE;</div>
           <h3>Gaming Ready</h3>
           <p>Gaming workflow with optimized settings, Game Mode, and controller support. Steam, Proton, and Wine ready.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">&#x1F4F6;</div>
-          <h3>WiFi Hotspot</h3>
-          <p>Built-in AP mode repeater. Share your internet from any WiFi connection to mobile devices via <code>KDX-Hotspot</code>.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">&#x1F3A8;</div>
@@ -1131,18 +1125,6 @@ Super + Shift + R</pre>
         <div class="step">
           <div class="step-num">4</div>
           <div class="step-content">
-            <h3>Enable Hotspot (Optional)</h3>
-            <p>Set up the WiFi repeater service for mobile sharing.</p>
-            <div class="code-block" style="margin-top:1rem;">
-              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-              <pre><span class="cmd">sudo cp</span> scripts/hotspot/* /etc/hostapd/ /etc/dnsmasq.d/ /etc/sysctl.d/ /etc/systemd/system/ /usr/local/bin/
-<span class="cmd">sudo systemctl enable --now kdx-hotspot</span></pre>
-            </div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-num">5</div>
-          <div class="step-content">
             <h3>Reload & Enjoy</h3>
             <p>Reload Hyprland and experience the KDX desktop.</p>
             <div class="code-block" style="margin-top:1rem;">
@@ -1173,11 +1155,6 @@ Super + Shift + R</pre>
         <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Black-Screen-Fix" class="doc-card">
           <h3>&#x1F6AB; Black Screen Fix</h3>
           <p>Diagnose and fix black screen issues. Covers NVIDIA/AMD/Intel GPU problems, SDDM X11 conflicts, kernel parameters, and recovery steps.</p>
-          <span class="doc-link">Read Guide &rarr;</span>
-        </a>
-        <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Hotspot-Setup" class="doc-card">
-          <h3>&#x1F4F6; Hotspot Setup</h3>
-          <p>Complete WiFi repeater/AP bridge guide with NAT and DHCP.</p>
           <span class="doc-link">Read Guide &rarr;</span>
         </a>
         <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Branding" class="doc-card">
@@ -1217,10 +1194,6 @@ Super + Shift + R</pre>
         <div class="faq-item">
           <div class="faq-question">What if I get a black screen after install?</div>
           <div class="faq-answer">Switch to TTY with <code>Ctrl+Alt+F2</code>. Check logs with <code>journalctl -b -p err --no-pager | tail -50</code>. For NVIDIA, ensure you installed <code>nvidia-dkms</code> and added kernel parameters <code>module_blacklist=nouveau nvidia_drm.modeset=1</code>. See the <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Black-Screen-Fix">Black Screen Fix</a> guide.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">Is the WiFi hotspot included?</div>
-          <div class="faq-answer">Yes. Enable it with <code>sudo systemctl enable --now kdx-hotspot</code>. SSID is <code>KDX-Hotspot</code> and password is <code>kdx12345</code>. Requires a WiFi adapter supporting AP + managed concurrent mode.</div>
         </div>
         <div class="faq-item">
           <div class="faq-question">How does Wallbash work?</div>
@@ -1264,10 +1237,10 @@ Super + Shift + R</pre>
           </a>
         </div>
         <div class="download-card">
-          <h3>&#x1F4F6; Hotspot Scripts</h3>
-          <p>Just want the WiFi hotspot service? Grab the scripts and configs directly.</p>
-          <a href="https://github.com/KSitharanimsara/knightdragonx-os/tree/main/scripts/hotspot" class="btn btn-secondary">
-            View Hotspot Files
+          <h3>&#x1F4DA; Documentation</h3>
+          <p>Complete guides for installation, configuration, branding, and troubleshooting.</p>
+          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki" class="btn btn-secondary">
+            Read the Docs
           </a>
         </div>
       </div>
@@ -1288,7 +1261,6 @@ Super + Shift + R</pre>
         <div class="footer-col">
           <h4>Docs</h4>
           <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Installation">Installation</a>
-          <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Hotspot-Setup">Hotspot</a>
           <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Branding">Branding</a>
           <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Configuration">Configuration</a>
         </div>
