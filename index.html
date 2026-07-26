@@ -144,6 +144,62 @@
     #features .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
     #features .feature-card p { color: var(--muted); font-size: 0.9rem; }
 
+    /* THEME SHOWCASE */
+    #theme-showcase { background: var(--bg); }
+    #theme-showcase .theme-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    #theme-showcase .theme-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; transition: all 0.3s;
+    }
+    #theme-showcase .theme-card:hover { border-color: var(--red); transform: translateY(-4px); }
+    #theme-showcase .theme-swatch {
+      height: 120px; display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 1rem;
+    }
+    #theme-showcase .swatch {
+      width: 48px; height: 48px; border-radius: 10px; border: 2px solid var(--border);
+      transition: transform 0.2s;
+    }
+    #theme-showcase .swatch:hover { transform: scale(1.1); }
+    #theme-showcase .theme-info { padding: 1.5rem; }
+    #theme-showcase .theme-info h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+    #theme-showcase .theme-info p { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+    #theme-showcase .theme-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    #theme-showcase .theme-tag {
+      background: rgba(255,0,51,0.1); color: var(--red); border: 1px solid rgba(255,0,51,0.2);
+      padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 600;
+    }
+
+    /* FAQ */
+    #faq { background: var(--bg2); }
+    #faq .faq-list { max-width: 800px; margin: 0 auto; }
+    #faq .faq-item {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      margin-bottom: 1rem; overflow: hidden; transition: all 0.3s;
+    }
+    #faq .faq-item:hover { border-color: var(--red); }
+    #faq .faq-question {
+      padding: 1.25rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; font-weight: 600; font-size: 1rem; user-select: none;
+    }
+    #faq .faq-question::after {
+      content: '+'; font-size: 1.5rem; color: var(--red); font-weight: 300;
+      transition: transform 0.3s;
+    }
+    #faq .faq-item.open .faq-question::after { transform: rotate(45deg); }
+    #faq .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 1.5rem; color: var(--muted); font-size: 0.9rem;
+    }
+    #faq .faq-item.open .faq-answer { max-height: 500px; padding: 0 1.5rem 1.25rem; }
+    #faq .faq-answer code {
+      background: var(--bg2); padding: 0.2rem 0.4rem; border-radius: 4px;
+      font-family: var(--mono); font-size: 0.8rem; color: var(--orange);
+    }
+
     /* GALLERY */
     #gallery { background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%); }
     #gallery .gallery-grid {
@@ -355,12 +411,14 @@
       </div>
       <div class="nav-links">
         <a href="#features">Features</a>
+        <a href="#theme-showcase">Theme</a>
         <a href="#gallery">Gallery</a>
         <a href="#tech">Tech</a>
         <a href="#requirements">Requirements</a>
         <a href="#install">Installation</a>
         <a href="#shortcuts">Shortcuts</a>
         <a href="#quickstart">Quick Start</a>
+        <a href="#faq">FAQ</a>
         <a href="#docs">Docs</a>
       </div>
       <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -378,7 +436,7 @@
     <div class="hero-content">
       <div class="hero-logo"></div>
       <h1>KNIGHTDRAGONX <span>OS</span></h1>
-      <p class="subtitle">Arch-based · Hyprland · HyDE · KDX Branding</p>
+      <p class="subtitle">Arch-based · Hyprland 0.56+ · HyDE · Wallbash · KDX Branding</p>
       <div class="accent-line"></div>
       <div class="hero-cta">
         <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Installation" class="btn btn-primary">Get Started</a>
@@ -432,6 +490,145 @@
           <div class="feature-icon">&#x1F4BB;</div>
           <h3>Developer Friendly</h3>
           <p>Kitty terminal, VS Code theme, Git integration, and a complete dotfiles suite for reproducible setups.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THEME SHOWCASE -->
+  <section id="theme-showcase">
+    <div class="container">
+      <h2 class="section-title">KnightDragonX Theme</h2>
+      <p class="section-subtitle">A complete HyDE theme with KDX red (#FF0033) and orange (#FFAA00) accents across every layer.</p>
+      <div class="theme-grid">
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:#FF0033;"></div>
+            <div class="swatch" style="background:#FFAA00;"></div>
+            <div class="swatch" style="background:#111111;"></div>
+            <div class="swatch" style="background:#1e1d2f;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Hyprland</h3>
+            <p>Dynamic borders, blur, shadows, and animations with Wallbash integration.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Borders</span>
+              <span class="theme-tag">Blur</span>
+              <span class="theme-tag">Animations</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:linear-gradient(135deg,#FF0033,#FFAA00);"></div>
+            <div class="swatch" style="background:#111111;"></div>
+            <div class="swatch" style="background:#FFFFFF;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Wallbash</h3>
+            <p>Dynamic theming extracted from wallpaper colors. Auto-switches GTK, Qt, and shell accents.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Dynamic</span>
+              <span class="theme-tag">GTK</span>
+              <span class="theme-tag">Qt</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:#1e1d2f;"></div>
+            <div class="swatch" style="background:#FF0033;"></div>
+            <div class="swatch" style="background:#888888;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Kvantum</h3>
+            <p>Qt widget styling with SVG-generated themes. Matches the KDX palette perfectly.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Qt5/Qt6</span>
+              <span class="theme-tag">SVG</span>
+              <span class="theme-tag">Dark</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:#111111;border-color:#FF0033;"></div>
+            <div class="swatch" style="background:#FF0033;"></div>
+            <div class="swatch" style="background:#FFAA00;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Hyprlock</h3>
+            <p>Lock screen with dynamic Wallbash colors, KDX logo, and time display.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Lock</span>
+              <span class="theme-tag">Clock</span>
+              <span class="theme-tag">Logo</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:#FF0033;"></div>
+            <div class="swatch" style="background:#1e1d2f;"></div>
+            <div class="swatch" style="background:#111111;border:1px solid #FF0033;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Rofi</h3>
+            <p>Application launcher with KDX red accents, rounded corners, and blur effects.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Launcher</span>
+              <span class="theme-tag">Blur</span>
+              <span class="theme-tag">Rounded</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:#111111;"></div>
+            <div class="swatch" style="background:#FF0033;"></div>
+            <div class="swatch" style="background:#FFAA00;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Waybar</h3>
+            <p>Status bar with workspace indicators, system stats, and KDX-branded modules.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Workspaces</span>
+              <span class="theme-tag">System</span>
+              <span class="theme-tag">Modules</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:#1e1d2f;"></div>
+            <div class="swatch" style="background:#FF0033;opacity:0.8;"></div>
+            <div class="swatch" style="background:#111111;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>Kitty</h3>
+            <p>GPU-accelerated terminal with KDX color palette and transparency support.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Terminal</span>
+              <span class="theme-tag">GPU</span>
+              <span class="theme-tag">Transparent</span>
+            </div>
+          </div>
+        </div>
+        <div class="theme-card">
+          <div class="theme-swatch">
+            <div class="swatch" style="background:url('configs/hyde/themes/KnightDragonX/kdx_wallpaper.png') center/cover;"></div>
+            <div class="swatch" style="background:#FF0033;"></div>
+            <div class="swatch" style="background:#FFAA00;"></div>
+          </div>
+          <div class="theme-info">
+            <h3>SDDM Corners</h3>
+            <p>Login screen with KDX wallpaper, red accents, and branded corners theme.</p>
+            <div class="theme-tags">
+              <span class="theme-tag">Login</span>
+              <span class="theme-tag">Brand</span>
+              <span class="theme-tag">Wallpaper</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1003,6 +1200,44 @@ Super + Shift + R</pre>
           <p>Common issues, fixes, and emergency recovery steps.</p>
           <span class="doc-link">Read Guide &rarr;</span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-subtitle">Quick answers to common questions about KnightDragonX OS.</p>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">How do I switch themes?</div>
+          <div class="faq-answer">Use <code>hydectl theme set &lt;theme-name&gt;</code> to switch themes. List available themes with <code>hydectl theme list</code>. The KnightDragonX theme uses Wallbash for dynamic colors based on your wallpaper.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What if I get a black screen after install?</div>
+          <div class="faq-answer">Switch to TTY with <code>Ctrl+Alt+F2</code>. Check logs with <code>journalctl -b -p err --no-pager | tail -50</code>. For NVIDIA, ensure you installed <code>nvidia-dkms</code> and added kernel parameters <code>module_blacklist=nouveau nvidia_drm.modeset=1</code>. See the <a href="https://github.com/KSitharanimsara/knightdragonx-os/wiki/Black-Screen-Fix">Black Screen Fix</a> guide.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Is the WiFi hotspot included?</div>
+          <div class="faq-answer">Yes. Enable it with <code>sudo systemctl enable --now kdx-hotspot</code>. SSID is <code>KDX-Hotspot</code> and password is <code>kdx12345</code>. Requires a WiFi adapter supporting AP + managed concurrent mode.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">How does Wallbash work?</div>
+          <div class="faq-answer">Wallbash extracts dominant colors from your wallpaper using <code>wal</code> and applies them to GTK, Qt (Kvantum), Hyprland borders, and terminal themes. Edit <code>wallbash.svg</code> to customize the palette generation.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Can I use this on AMD or Intel GPUs?</div>
+          <div class="faq-answer">Absolutely. Install <code>mesa</code> and the appropriate driver (<code>xf86-video-amdgpu</code> or <code>intel-media-driver</code>). All KDX theming works regardless of GPU vendor.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What icon theme is used?</div>
+          <div class="faq-answer">Tela-circle-dracula is the default icon theme. It is set in the HyDE theme environment and provides a consistent circular icon style across all applications.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Is this a full ISO or just configs?</div>
+          <div class="faq-answer">This repository contains configuration files and branding. It is not a full ISO build system. For a complete installable image, see <code>docs/ARCH-INSTALL-GUIDE.txt</code>. All configs can be applied to any existing Arch-based system.</div>
+        </div>
       </div>
     </div>
   </section>

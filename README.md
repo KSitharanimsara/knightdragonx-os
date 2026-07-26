@@ -1,14 +1,17 @@
 # KnightDragonX OS
+
 <div align="center">
 
-  <img src="branding/logo.png" alt="KnightDragonX Logo" width="180"/>
+  <img src="branding/logo.png" alt="KnightDragonX Logo" width="200" style="filter: drop-shadow(0 4px 20px rgba(255,0,51,0.3));"/>
 
-  **Arch-based · Hyprland · HyDE · KDX Branding**
+  **Arch-based · Hyprland 0.56+ · HyDE · KDX Branding · Wallbash**
 
   [![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
-  [![Arch](https://img.shields.io/badge/Arch-Linux-1793D1?logo=archlinux&logoColor=white)](https://archlinux.org)
-  [![Hyprland](https://img.shields.io/badge/Hyprland-0.56+-41B1E2?logo=hyprland&logoColor=white)](https://hyprland.org)
+  [![Arch Linux](https://img.shields.io/badge/Arch-Linux-1793D1?logo=archlinux&logoColor=white)](https://archlinux.org)
+  [![Hyprland](https://img.shields.io/badge/Hyprland-0.56%2B-41B1E2?logo=hyprland&logoColor=white)](https://hyprland.org)
   [![SDDM](https://img.shields.io/badge/SDDM-Corners-FF0033?logo=linux&logoColor=white)](https://github.com/sddm/sddm)
+  [![HyDE](https://img.shields.io/badge/HyDE-Shell-FFAA00?logo=github&logoColor=white)](https://github.com/HyDE-Project/HyDE)
+  [![Wallbash](https://img.shields.io/badge/Wallbash-Dynamic-888888)](https://github.com/HyDE-Project/HyDE/wiki/Wallbash)
 
 </div>
 
@@ -16,23 +19,73 @@
 
 ## Overview
 
-KnightDragonX OS is an Arch-based distribution / dotfiles suite focused on the **KnightDragonX** brand identity. It ships with:
+KnightDragonX OS is an Arch-based Linux distribution focused on the **KnightDragonX** brand identity. It ships with a complete theming stack featuring KDE red (`#FF0033`) and orange (`#FFAA00`) accent colors.
 
-- **Hyprland** compositor + **HyDE** tooling
-- **SDDM** login manager with KDX Corners theme
-- **KDX Hotspot** WiFi repeater service (AP + NAT)
-- **Waybar**, **Rofi**, **Kitty**, **Kvantum** theming
-- **KDE red** (`#FF0033`) accent palette
+### What's Included
+
+- **Hyprland** compositor + **HyDE** tooling with one-click theme switching
+- **SDDM Corners** login manager with KDX branding
+- **KDX Hotspot** WiFi repeater service (AP + NAT bridge)
+- **Wallbash** dynamic theming based on wallpaper
+- **Waybar**, **Rofi**, **Kitty**, **Kvantum** with KDX styling
+- **Tela-circle-dracula** icon theme
 - **Timeshift / Snapper** restore-point workflow
+- **fastfetch** with KDX logo
 
 > **Note:** This repo is a configuration + branding source. It is not a full ISO build system. For a complete installable image, see `docs/ARCH-INSTALL-GUIDE.txt`.
 
 ---
 
+## Theme System
+
+The KnightDragonX theme is a complete HyDE theme with:
+
+| Component | Description |
+|-----------|-------------|
+| `hypr.theme` | Hyprland borders, blur, shadows, Wallbash integration |
+| `hyprlock.theme` | Lock screen with dynamic Wallbash colors |
+| `kitty.theme` | Terminal colors with KDX accents |
+| `rofi.theme` | Application launcher styling |
+| `waybar.theme` | Status bar with KDX branding |
+| `kvantum/kvantum.theme` | Qt widget styling with SVG |
+| `wallbash.svg` | Dynamic theme generation |
+| `wallpapers/` | 7+ KDX branded wallpapers |
+
+### Brand Colors
+
+| Name | Hex | Usage |
+|------|-----|-------|
+| **KDX Red** | `#FF0033` | Active borders, selection, highlights |
+| **KDX Orange** | `#FFAA00` | Secondary accent, minutes display |
+| **Obsidian** | `#111111` | Backgrounds, panels |
+| **Dark BG 2** | `#1e1d2f` | Secondary backgrounds |
+| **White** | `#FFFFFF` | Text on dark backgrounds |
+| **Muted** | `#888888` | Secondary text |
+
+---
+
 ## Quick Start
 
+### Automated Install
+
 ```bash
-# Clone
+git clone https://github.com/KSitharanimsara/knightdragonx-os.git
+cd knightdragonx-os
+
+# System packages + GPU drivers + services (root)
+sudo ./scripts/installer.sh
+
+# User configs + theme (user)
+./scripts/post-install.sh
+
+# Reboot
+sudo reboot
+```
+
+### Manual Install
+
+```bash
+# Clone repository
 git clone https://github.com/KSitharanimsara/knightdragonx-os.git
 cd knightdragonx-os
 
@@ -56,10 +109,7 @@ sudo cp -r configs/sddm/corners-theme /usr/share/sddm/themes/Corners
 sudo cp configs/sddm/sddm.conf /etc/sddm.conf.d/the_hyde_project.conf
 ```
 
-Then reload Hyprland:
-```
-Super + Shift + R
-```
+Then reload Hyprland: `Super + Shift + R`
 
 ---
 
@@ -71,14 +121,16 @@ knightdragonx-os/
 ├── configs/
 │   ├── hyprland/          # Hyprland, hyprlock, hypridle, animations, shaders
 │   ├── waybar/            # Waybar config + styles
-│   ├── rofi/              # Rofi theme
+│   ├── rofi/              # Rofi theme + assets
 │   ├── kitty/             # Kitty terminal theme
 │   ├── kvantum/           # Kvantum Qt theme
 │   ├── hyde/              # HyDE shell + themes
 │   ├── sddm/              # SDDM Corners theme + config
-│   └── system/            # Shell, GTK, fastfetch, fish
+│   └── system/            # Shell, GTK, fastfetch, fish configs
 ├── scripts/
-│   └── hotspot/           # WiFi hotspot systemd service + configs
+│   ├── installer.sh          # System installer (root): GPU drivers, services, SDDM
+│   ├── post-install.sh       # User setup: configs, theme, shell
+│   └── hotspot/              # WiFi hotspot systemd service + configs
 ├── restore-points/        # Backup + hotspot build guide
 ├── docs/                  # Install guide, wiki source
 └── .github/               # Issue templates, workflows
@@ -86,33 +138,47 @@ knightdragonx-os/
 
 ---
 
-## Branding
+## Installation Guide
 
-The official KnightDragonX brand assets live in `branding/`:
+For complete Arch Linux installation instructions:
 
-| File | Purpose |
-|------|---------|
-| `logo.png` | Primary logo (alt logo = main logo) |
-| `wallpaper.png` | Desktop / lock-screen wallpaper |
-| `brand-portfolio.html` | Official brand portfolio with demo clips |
+1. **Pre-Installation** - Boot ISO, verify UEFI, identify GPU, connect to internet
+2. **Partition & Format** - Create GPT partitions (512MB EFI + root)
+3. **Install Base System** - pacstrap with GPU drivers (CRITICAL: NVIDIA before reboot)
+4. **System Configuration** - Timezone, locale, hostname, GRUB, user creation
+5. **SDDM & Services** - Configure SDDM, enable NetworkManager and sddm
+6. **Post-Install** - Install KDX configs, apply SDDM theme, start hotspot
+7. **Verification** - Check all components are working
 
-Brand colors:
-- **Primary:** `#FF0033` (KDE red)
-- **Accent:** `#FFAA00`
-- **Background:** `#111111` / `#1e1d2f`
+See [docs/wiki/Installation.md](docs/wiki/Installation.md) for the full guide.
 
 ---
 
-## Hotspot (WiFi Repeater)
-
-See `restore-points/HOTSPOT-GUIDE.md` for the full build log and restore steps.
+## WiFi Hotspot
 
 Quick summary:
-- **SSID:** `KDX-Hotspot`
-- **Password:** `kdx12345`
-- **Client subnet:** `192.168.10.0/24`
-- **Internet:** shared from the primary `kdx` WiFi connection
-- **Service:** `kdx-hotspot.service` (enabled at boot)
+
+| Setting | Value |
+|---------|-------|
+| **SSID** | `KDX-Hotspot` |
+| **Password** | `kdx12345` |
+| **Client subnet** | `192.168.10.0/24` |
+| **Internet** | Shared from primary WiFi connection |
+| **Service** | `kdx-hotspot.service` |
+
+```bash
+# Start/stop hotspot
+sudo systemctl start kdx-hotspot
+sudo systemctl stop kdx-hotspot
+
+# Check status
+sudo systemctl status kdx-hotspot
+
+# View logs
+sudo journalctl -xeu kdx-hotspot
+```
+
+See [docs/wiki/Hotspot-Setup.md](docs/wiki/Hotspot-Setup.md) for full documentation.
 
 ---
 
@@ -128,43 +194,62 @@ sudo timeshift --create --comments "KDX-stable-2026-07-26"
 sudo snapper -c root create --description "KDX hotspot stable point"
 ```
 
-### Manual backup checklist
-See `restore-points/` for exact file lists.
+### Manual backup
+See `restore-points/` for exact file lists and restore procedures.
 
 ---
 
 ## System Requirements
 
-- **OS:** Arch Linux (or Arch-based)
-- **Kernel:** 6.12+ recommended
-- **Compositor:** Hyprland 0.56+
-- **WiFi:** Any adapter supporting AP + managed concurrent mode
-  - Tested: Realtek RTL8852BE (`rtw89_8852bte`)
-- **RAM:** 4 GB minimum, 8 GB recommended
-- **Disk:** 30 GB minimum for base + configs
+| Requirement | Minimum | Recommended |
+|-------------|---------|-------------|
+| **OS** | Arch Linux (or Arch-based) | Arch Linux latest |
+| **GPU** | AMD / Intel / NVIDIA | Latest drivers |
+| **RAM** | 4 GB | 8 GB |
+| **Storage** | 30 GB | 60 GB+ |
+| **WiFi** | AP + managed concurrent mode | RTL8852BE tested |
+| **Boot** | 64-bit x86_64 | UEFI |
 
 ---
 
-## Troubleshooting
+## FAQ
 
-| Issue | Fix |
-|-------|-----|
-| Hotspot won’t start | Check `sudo journalctl -xeu kdx-hotspot` |
-| `wlo1_ap` missing | `sudo iw dev wlo1_ap del && sudo iw phy phy0 interface add wlo1_ap type __ap` |
-| No internet on mobile | Verify NAT: `sudo iptables -t nat -L POSTROUTING` |
-| SDDM theme not applying | Check `/etc/sddm.conf.d/the_hyde_project.conf` |
-| Hyprland reload errors | Validate `userprefs.conf` — window rules belong in `windowrules.conf` |
+### How do I switch themes?
+Use `hydectl theme set <theme-name>` to switch. List available themes with `hydectl theme list`.
+
+### What if I get a black screen?
+Switch to TTY with Ctrl+Alt+F2, check logs with `journalctl -b -p err`. Refer to [docs/wiki/Black-Screen-Fix.md](docs/wiki/Black-Screen-Fix.md).
+
+### How do I customize colors?
+Wallbash extracts colors from your wallpaper automatically. Edit `wallbash.svg` and run `wal -i <wallpaper>` to regenerate.
+
+### Is it suitable for gaming?
+Yes! Includes gaming workflow with optimized settings, Steam/Proton/Wine support, and controller integration. Toggle with Super+Alt+G.
+
+---
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Installation](docs/wiki/Installation.md) | Complete Arch install with KDX setup |
+| [Black Screen Fix](docs/wiki/Black-Screen-Fix.md) | GPU-specific troubleshooting |
+| [Hotspot Setup](docs/wiki/Hotspot-Setup.md) | WiFi repeater configuration |
+| [Branding](docs/wiki/Branding.md) | Colors, logos, theme integration |
+| [Configuration](docs/wiki/Configuration.md) | Hyprland, Waybar, Rofi, Kitty |
+| [Restore Points](docs/wiki/Restore-Points.md) | Backup and recovery |
+| [Troubleshooting](docs/wiki/Troubleshooting.md) | Common issues and fixes |
 
 ---
 
 ## License
 
-GPL-3.0. See `LICENSE` for details.
+GPL-3.0. See [LICENSE](LICENSE) for details.
 
 ---
 
 <div align="center">
 
-**KnightDragonX OS** · Arch + Hyprland + KDX Branding
+**KnightDragonX OS** · Arch + Hyprland + KDX Branding · Stable: 2026-07-26
 
 </div>
