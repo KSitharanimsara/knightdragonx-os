@@ -1,44 +1,30 @@
-```
-# Environment
+# Examples and documentation
+*.md
+*.txt
+*.html
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Environment files
 .env
 .env.local
 *.env.*
 
 # Dependencies
 node_modules/
-
-# Build artifacts
-dist/
-build/
-target/
-
-# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.egg-info/
 .Python
-env/
 venv/
 .venv/
-.venv.bak/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-*.tmp
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
 
-# Compiled and binary files
+# Build artifacts
+build/
+dist/
+*.pyc
 *.class
 *.o
 *.obj
@@ -47,18 +33,38 @@ Thumbs.db
 *.so
 *.a
 *.out
-*.dylib
-*.jar
-*.war
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Testing and coverage
+.coverage
+coverage/
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# Package managers
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compressed files
 *.zip
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.7z
-*.rar
 *.gz
+*.tar
+*.tgz
 *.bz2
 *.xz
+*.7z
+*.rar
 *.zst
 *.lz4
 *.lzh
@@ -69,63 +75,7 @@ Thumbs.db
 *.Z
 *.lz
 *.lzo
-
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-\#*\#
-.\#*
-%*%
-._*
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-.coverage.*
-.nox/
-.pytest_cache/
-.mypy_cache/
-.hypothesis/
-
-# Distribution / packaging
-.Python
-env/
-venv/
-.venv/
-.venv.bak/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.tmp
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-```
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
