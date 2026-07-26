@@ -1,73 +1,131 @@
-# OS / system
-*.iso
-*.img
-*. squashfs
-/boot/
-/efi/
-/dev/
-/proc/
-/sys/
-/mnt/
-/media/
-/run/
-/var/
-/usr/
-/etc/
+```
+# Environment
+.env
+.env.local
+*.env.*
 
-# User caches and browser data
-.cache/
-.config/mozilla/
-.config/Code/CachedExtensionVSIXs/
-.config/Code/GPUCache/
-.config/Code/DawnWebGPUCache/
-.config/Code/DawnGraphiteCache/
-.config/Code/Cookies*
-.config/Code/Session*
-.config/Code/logs/
-.config/Code/machineid
-.config/firefox/
-.config/chromium/
-.config/google-chrome/
-.config/brave-browser/
-.config/BraveSoftware/
+# Dependencies
+node_modules/
 
-# Kilo / IDE specific
-.kilo/
-.flatpak/
-.var/
-.npm/
-.nvm/
-.cargo/
-.rustup/
-.oh-my-zsh/
-.vscode-oss-shared/
-.vscode-oss/
-.vscode-shared/
+# Build artifacts
+dist/
+build/
+target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Compiled and binary files
+*.class
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
+*.dylib
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.7z
+*.rar
+*.gz
+*.bz2
+*.xz
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+\#*\#
+.\#*
+%*%
+._*
+.DS_Store
+Thumbs.db
 
-# Zsh runtime
-.config/zsh/.zcompdump*
-.config/zsh/.zshenv
+# Logs
+*.log
 
-# Password / secret stores
-.config/gnome-keyring/
-.config/kwallet/
-.pki/
-.ssh/
+# Coverage
+coverage/
+htmlcov/
+.coverage
+.coverage.*
+.nox/
+.pytest_cache/
+.mypy_cache/
+.hypothesis/
 
-# Media / downloads
-Downloads/
-Music/
-Videos/
-Pictures/
-Templates/
-Public/
+# Distribution / packaging
+.Python
+env/
+venv/
+.venv/
+.venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.tmp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
 
-# HyDE runtime
-.local/share/hyde/wallbash/
-.local/state/
-.local/share/Trash/
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+```
