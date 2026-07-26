@@ -12,7 +12,37 @@ All assets are in the [`branding/`](https://github.com/KSitharanimsara/knightdra
 |------|---------|------|
 | `logo.png` | Primary logo (alt logo = main logo) | 667 KB |
 | `wallpaper.png` | Desktop / lock-screen wallpaper | 256 KB |
-| `brand-portfolio.html` | Official brand portfolio with demo clips | 1.7 MB |
+| `brand-portfolio.html` | **Interactive brand portfolio** with color palette, typography, icons, and download links | ~50 KB |
+
+---
+
+## Brand Portfolio
+
+The [`brand-portfolio.html`](https://github.com/KSitharanimsara/knightdragonx-os/blob/main/branding/brand-portfolio.html) file is the **official interactive KnightDragonX brand book**. Open it in any modern browser to view:
+
+### Features
+- **🎨 Color Palette** — Click-to-copy hex codes with usage rules
+- **📝 Typography** — Inter (UI) and JetBrains Mono (code) showcase
+- **🔷 Iconography** — Waybar glyph examples with neon glow effects
+- **💾 Downloads** — Direct links to logo, wallpaper, and theme packs
+- **📱 Responsive** — Works on mobile, tablet, and desktop
+- **⚡ Interactive** — Smooth scroll navigation, hover effects, toast notifications
+
+### Sections
+1. **Overview** — Hero section with brand introduction
+2. **Colors** — Obsidian Neon system with copy-to-clipboard functionality
+3. **Typography** — Font samples for UI and code
+4. **Icons** — Waybar system glyphs
+5. **Downloads** — Asset packs with version info and checksums
+
+### Usage
+```bash
+# Open locally
+xdg-open branding/brand-portfolio.html
+
+# Or host on GitHub Pages
+# Visit: https://KSitharanimsara.github.io/knightdragonx-os/branding/brand-portfolio.html
+```
 
 ---
 
@@ -20,11 +50,17 @@ All assets are in the [`branding/`](https://github.com/KSitharanimsara/knightdra
 
 | Name | Hex | Usage |
 |------|-----|-------|
-| **KDX Red** | `#FF0033` | Primary accent, borders, active states |
+| **KDX Red** | `#FF0033` | Primary accent, borders, active states, glow effects |
 | **KDX Orange** | `#FFAA00` | Secondary accent, highlights |
 | **Dark BG** | `#111111` | Backgrounds, panels |
-| **Darker BG** | `#1e1d2f` | Input fields, cards |
+| **Darker BG** | `#0A0A0A` | Cards, depth layers |
 | **White** | `#FFFFFF` | Text on dark backgrounds |
+| **Gray** | `#888888` | Secondary text, labels |
+
+**Usage Rules:**
+- **Black #000000** — always background. Never use dark gray as page bg.
+- **Neon Red** — only for active, focus, glow, cursor, workspace. Max 8% of surface.
+- **White** — text, logo on dark. 92% opacity for body to reduce harshness.
 
 ---
 
@@ -76,20 +112,6 @@ cp configs/rofi/theme.rasi ~/.config/rofi/theme.rasi
 
 ---
 
-## Brand Portfolio
-
-The `brand-portfolio.html` file is the official KnightDragonX brand book. It includes:
-
-- Logo usage guidelines
-- Color palette specifications
-- Typography standards
-- Application mockups
-- Demo clips / videos
-
-Open it in a browser to view the full brand guidelines.
-
----
-
 ## Creating Custom Themes
 
 Use the `KnightDragonX` theme in HyDE as a template:
@@ -105,3 +127,24 @@ Key files to customize:
 - `rofi.theme` — launcher colors
 - `waybar.theme` — bar colors
 - `kvantum/kvconfig.theme` — Qt app colors
+
+---
+
+## Design Philosophy
+
+**Obsidian Neon** — A precision-crafted design system for modern Linux desktops:
+
+- **Minimal Surface** — Black backgrounds dominate, red accents guide attention
+- **Functional Beauty** — Every element serves a purpose in the WM environment
+- **Performance First** — Lightweight CSS, no heavy frameworks
+- **Accessibility** — High contrast ratios, clear visual hierarchy
+- **Consistency** — Same colors across SDDM, Hyprland, Waybar, GTK, Qt
+
+---
+
+## Resources
+
+- [GitHub Repository](https://github.com/KSitharanimsara/knightdragonx-os)
+- [Installation Guide](Installation.md)
+- [Configuration Guide](Configuration.md)
+- [Troubleshooting](Troubleshooting.md)
