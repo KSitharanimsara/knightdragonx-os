@@ -1,1 +1,76 @@
-(docs/wiki/Branding.md)
+# OS / system
+*.iso
+*.img
+*.squashfs
+/boot/
+/efi/
+/dev/
+/proc/
+/sys/
+/mnt/
+/media/
+/run/
+/var/
+/usr/
+/etc/
+
+# User caches and browser data
+.cache/
+.config/mozilla/
+.config/Code/CachedExtensionVSIXs/
+.config/Code/GPUCache/
+.config/Code/DawnWebGPUCache/
+.config/Code/DawnGraphiteCache/
+.config/Code/Cookies*
+.config/Code/Session*
+.config/Code/logs/
+.config/Code/machineid
+.config/firefox/
+.config/chromium/
+.config/google-chrome/
+.config/brave-browser/
+.config/BraveSoftware/
+
+# Kilo / IDE specific
+.kilo/
+.flatpak/
+.var/
+.npm/
+.nvm/
+.cargo/
+.rustup/
+.oh-my-zsh/
+.vscode-oss-shared/
+.vscode-oss/
+.vscode-shared/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Zsh runtime
+.config/zsh/.zcompdump*
+.config/zsh/.zshenv
+
+# Password / secret stores
+.config/gnome-keyring/
+.config/kwallet/
+.pki/
+.ssh/
+
+# Media / downloads
+Downloads/
+Music/
+Videos/
+Pictures/
+Templates/
+Public/
+
+# HyDE runtime
+.local/share/hyde/wallbash/
+.local/state/
+.local/share/Trash/
+
+# Build artifacts
+knightdragonx_brand_portfolio.html
